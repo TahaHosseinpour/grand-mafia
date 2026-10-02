@@ -1,6 +1,6 @@
 {
-  "name": "grand-mafia",
-  "description": "نسخه فارسی بازی هیتلر مخفی — Next.js + Socket.IO + Prisma",
+  "name": "secret-hitler",
+  "description": "نسخه فارسی بازی هیتلر ناشناس — Next.js + Socket.IO + Prisma",
   "version": "2.0.0",
   "private": true,
   "license": "CC-BY-NC-SA-4.0",

@@ -1,5 +1,12 @@
 {
-	"name": "App",
+	"name": "هیتلر ناشناس (Secret Hitler)",
+	"short_name": "هیتلر ناشناس",
+	"lang": "fa",
+	"dir": "rtl",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#131211",
+	"theme_color": "#3a1c12",
 	"icons": [
 		{
 			"src": "/android-icon-36x36.png",

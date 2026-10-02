@@ -5,7 +5,7 @@ import { PagePanel, SectionTitle } from '@/components/layout/page-panel';
 import { isPasswordResetLinkValid } from '@/features/auth';
 import { ResetPasswordForm } from '@/features/auth/client';
 
-export const metadata: Metadata = { title: 'تغییر رمز عبور — هیتلر مخفی', robots: { index: false } };
+export const metadata: Metadata = { title: 'تغییر رمز عبور — هیتلر ناشناس', robots: { index: false } };
 
 /** The page a password-reset email links to (legacy page-resetpassword.pug). */
 export default function ResetPasswordPage({ params }: PageProps<'/reset-password/[username]/[token]'>) {

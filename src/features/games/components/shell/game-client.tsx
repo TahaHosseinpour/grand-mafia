@@ -69,7 +69,7 @@ export default function GameClient({ user }: { user: UserInfo | null }) {
   useHashRouter();
   const safeForWork = useClientState((state) => Boolean(state.userInfo.gameSettings?.safeForWork));
   useEffect(() => {
-    document.title = safeForWork ? 'بازی' : 'هیتلر مخفی';
+    document.title = safeForWork ? 'بازی' : 'هیتلر ناشناس';
   }, [safeForWork]);
 
   return (

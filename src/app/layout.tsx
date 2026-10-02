@@ -3,8 +3,9 @@ import { lalezar, vazirmatn } from './fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'هیتلر مخفی',
-  description: 'نسخه آنلاین بازی رومیزی استنتاج اجتماعی «هیتلر مخفی». همیشه رایگان و بدون تبلیغ.',
+  title: 'هیتلر ناشناس',
+  applicationName: 'هیتلر ناشناس (Secret Hitler)',
+  description: 'نسخه آنلاین بازی رومیزی استنتاج اجتماعی «هیتلر ناشناس». همیشه رایگان و بدون تبلیغ.',
   manifest: '/manifest.json',
   icons: {
     icon: [

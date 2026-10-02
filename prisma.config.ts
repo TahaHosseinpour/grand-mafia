@@ -20,6 +20,6 @@ export default defineConfig({
     seed: 'tsx --import ./scripts/register-hooks.mjs prisma/seed.ts',
   },
   datasource: {
-    url: process.env.DATABASE_URL ?? 'postgresql://localhost:5432/grand_mafia',
+    url: process.env.DATABASE_URL ?? 'postgresql://localhost:5432/secret_hitler',
   },
 });

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Bell, Gamepad2, Megaphone, MessagesSquare, Plus, Settings, Vote } from 'lucide-react';
 import { PagePanel, PageTitle } from '@/components/layout/page-panel';
 
-export const metadata: Metadata = { title: 'آموزش بازی — هیتلر مخفی' };
+export const metadata: Metadata = { title: 'آموزش بازی — هیتلر ناشناس' };
 
 const STEPS = [
   {

@@ -228,8 +228,8 @@ registerCommand({
     socket.emit(
       'pingPlayer',
       game.general.blindMode || game.general.playerChats === 'disabled'
-        ? 'هیتلر مخفی: یک بازیکن شما را فراخوانده است.'
-        : `هیتلر مخفی: بازیکن ${user.userName} شما را فراخواند.`
+        ? 'هیتلر ناشناس: یک بازیکن شما را فراخوانده است.'
+        : `هیتلر ناشناس: بازیکن ${user.userName} شما را فراخواند.`
     );
 
     if (game.general.playerChats === 'disabled') {

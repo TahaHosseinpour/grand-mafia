@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { PagePanel, PageTitle } from '@/components/layout/page-panel';
 
-export const metadata: Metadata = { title: 'قوانین استفاده — هیتلر مخفی' };
+export const metadata: Metadata = { title: 'قوانین استفاده — هیتلر ناشناس' };
 
 /*
  * Terms of use (legacy views/page-tou.pug), translated. Two deliberate

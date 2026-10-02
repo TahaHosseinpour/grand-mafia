@@ -1,6 +1,6 @@
 # AGENTS.md — working rules for this codebase
 
-Grand Mafia is a Persian (RTL) rewrite of the Secret Hitler.io lobby game on
+Secret Hitler («هیتلر ناشناس») is a Persian (RTL) rewrite of the Secret Hitler.io lobby game on
 Next.js 16 + TypeScript + Prisma/PostgreSQL + Tailwind, with the game running
 over Socket.IO in the same process. The pre-rewrite Express/Mongo app lives in
 `legacy/` as the porting reference until every feature has moved.

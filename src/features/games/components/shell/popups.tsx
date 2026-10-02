@@ -106,7 +106,7 @@ function WarningPopup({ warning }: { warning: { text: string; time: string } }) 
 }
 
 const WALKTHROUGH = [
-  { title: 'به هیتلر مخفی خوش آمدید', body: <h4 className="font-bold">لطفاً پیش از شروع بازی، چند لحظه این راهنمای کوتاه را بخوانید.</h4> },
+  { title: 'به هیتلر ناشناس خوش آمدید', body: <h4 className="font-bold">لطفاً پیش از شروع بازی، چند لحظه این راهنمای کوتاه را بخوانید.</h4> },
   {
     title: 'قوانین سایت و پشتیبانی',
     body: (

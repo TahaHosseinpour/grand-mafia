@@ -6,7 +6,7 @@ import { getSession } from '@/server/auth';
 import { getMyAccount } from '@/features/users';
 import { AccountActions } from '@/features/auth/client';
 
-export const metadata: Metadata = { title: 'حساب من — هیتلر مخفی' };
+export const metadata: Metadata = { title: 'حساب من — هیتلر ناشناس' };
 
 /** "My account" (legacy views/page-account.pug). Signed-in only. */
 export default function AccountPage() {

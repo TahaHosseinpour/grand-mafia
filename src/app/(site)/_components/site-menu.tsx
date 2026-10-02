@@ -63,7 +63,7 @@ export default function SiteMenu({ signedIn, account }: { signedIn: boolean; acc
             <Menu className="size-6" />
           </button>
           <Link href="/" className="me-3 font-display text-[1.55rem] leading-none text-paper/90 [text-shadow:0_2px_0_rgb(0_0_0/0.35)] hover:text-paper">
-            هیتلر مخفی
+            هیتلر ناشناس
           </Link>
           <div className="hidden items-center gap-0.5 lg:flex">
             {SITE_LINKS.map((link) => (
@@ -83,7 +83,7 @@ export default function SiteMenu({ signedIn, account }: { signedIn: boolean; acc
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px]" onClick={() => setOpen(false)}>
           <aside className="absolute inset-y-0 start-0 flex w-72 flex-col gap-1 bg-surface p-4 shadow-[0_0_40px_rgb(0_0_0/0.5)]" onClick={(event) => event.stopPropagation()}>
             <div className="mb-3 flex items-center justify-between">
-              <span className="font-display text-[1.5rem]">هیتلر مخفی</span>
+              <span className="font-display text-[1.5rem]">هیتلر ناشناس</span>
               <button type="button" onClick={() => setOpen(false)} aria-label="بستن" className="flex size-9 cursor-pointer items-center justify-center rounded-full text-fg-muted hover:bg-surface-3">
                 <X className="size-5" />
               </button>

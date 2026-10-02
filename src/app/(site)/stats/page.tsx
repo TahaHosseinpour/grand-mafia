@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { PagePanel, PageTitle } from '@/components/layout/page-panel';
 
-export const metadata: Metadata = { title: 'آمار — هیتلر مخفی' };
+export const metadata: Metadata = { title: 'آمار — هیتلر ناشناس' };
 
 /**
  * Win-rate statistics (legacy views/page-stats.pug). The charts are built

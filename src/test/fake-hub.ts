@@ -94,7 +94,7 @@ export class FakeHub implements Hub {
   }
 }
 
-const STORE_KEY = Symbol.for('grand-mafia.engine-store');
+const STORE_KEY = Symbol.for('secret-hitler.engine-store');
 
 /** A new, empty engine wired to a new fake hub. Call at the start of every test. */
 export function resetEngine(): FakeHub {

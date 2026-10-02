@@ -74,7 +74,7 @@ export type EngineStore = {
   timers: { started: boolean };
 };
 
-const KEY = Symbol.for('grand-mafia.engine-store');
+const KEY = Symbol.for('secret-hitler.engine-store');
 
 function createStore(): EngineStore {
   return {

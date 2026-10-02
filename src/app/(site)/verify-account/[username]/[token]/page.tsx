@@ -5,7 +5,7 @@ import { PagePanel, SectionTitle } from '@/components/layout/page-panel';
 import { getSession } from '@/server/auth';
 import { verifyEmail, verifyEmailInput } from '@/features/auth';
 
-export const metadata: Metadata = { title: 'تأیید حساب — هیتلر مخفی', robots: { index: false } };
+export const metadata: Metadata = { title: 'تأیید حساب — هیتلر ناشناس', robots: { index: false } };
 
 /**
  * The page a verification email links to. Like the legacy route it needs

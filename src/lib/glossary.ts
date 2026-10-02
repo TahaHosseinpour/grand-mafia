@@ -4,7 +4,7 @@
  * (Direct translation of the original terms — decision in docs/migration.md.)
  */
 export const T = {
-  game: 'هیتلر مخفی',
+  game: 'هیتلر ناشناس',
   liberal: 'لیبرال',
   liberals: 'لیبرال‌ها',
   fascist: 'فاشیست',

@@ -66,7 +66,7 @@ export default function AppHeader() {
           ) : null}
         </div>
         <a href="#/" className="font-display text-[1.65rem] leading-none text-paper/90 [text-shadow:0_2px_0_rgb(0_0_0/0.35)] hover:text-paper">
-          {safeForWork ? 'بازی' : 'هیتلر مخفی'}
+          {safeForWork ? 'بازی' : 'هیتلر ناشناس'}
         </a>
         <div className="flex justify-end">
           {userName ? (

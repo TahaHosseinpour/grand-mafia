@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { PagePanel } from '@/components/layout/page-panel';
 
-export const metadata: Metadata = { title: 'درباره — هیتلر مخفی' };
+export const metadata: Metadata = { title: 'درباره — هیتلر ناشناس' };
 
 function H3({ children }: { children: React.ReactNode }) {
   return <h3 className="mb-[0.5em] mt-[1.5em] text-[1.28571429rem] font-bold text-fg">{children}</h3>;

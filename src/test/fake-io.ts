@@ -151,7 +151,7 @@ export class FakeIo {
   }
 }
 
-const STORE_KEY = Symbol.for('grand-mafia.engine-store');
+const STORE_KEY = Symbol.for('secret-hitler.engine-store');
 
 /** A new, empty engine whose hub is a fake Socket.IO server. */
 export function resetRealtime(): FakeIo {

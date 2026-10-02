@@ -13,7 +13,7 @@ export default function HomePage() {
       <section className="relative mt-6 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#3a1c12] via-surface to-[#1d3440] px-6 py-10 sm:px-12 sm:py-14">
         <div className="relative z-10 max-w-xl">
           <OnlineCount />
-          <h1 className="mt-4 font-display text-[3rem] leading-[1.05] text-paper sm:text-[4.2rem]">هیتلر مخفی</h1>
+          <h1 className="mt-4 font-display text-[3rem] leading-[1.05] text-paper sm:text-[4.2rem]">هیتلر ناشناس</h1>
           <p className="mt-3 text-[1.1rem] leading-relaxed text-fg-muted sm:text-[1.2rem]">
             بازی استنتاج اجتماعی برای ۵ تا ۱۰ نفر. لیبرال‌ها باید هیتلر را پیدا کنند؛ فاشیست‌ها باید پنهان بمانند و او را به قدرت برسانند. آنلاین، رایگان و بدون تبلیغ.
           </p>

@@ -1,8 +1,8 @@
-# Grand Mafia — project memory
+# Secret Hitler (هیتلر ناشناس) — project memory
 
 ## Overview
 A Persian (RTL) online version of the social-deduction board game Secret
-Hitler ("هیتلر مخفی"), forked from Secret Hitler.io and being rewritten from
+Hitler ("هیتلر ناشناس"), forked from Secret Hitler.io and being rewritten from
 Express + MongoDB + React 16 onto Next.js 16. The game's rules and flow stay
 as they were (the engine is a faithful port). The look does not: the product
 owner asked for a new, modern, mobile-first design in the spirit of
