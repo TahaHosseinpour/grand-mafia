@@ -1,0 +1,42 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens. Values come from the legacy SCSS (legacy/src/scss), so the
+ * game looks the way it did; only the font (Vazirmatn) and direction (RTL)
+ * change. Components use these tokens, never raw hex.
+ */
+@theme {
+  --font-sans: var(--font-vazirmatn), Tahoma, sans-serif;
+
+  /* Teams and roles (legacy variables.scss) */
+  --color-liberal: #608cb3;
+  --color-liberal-light: #bfd8ee;
+  --color-fascist: #e36248;
+  --color-fascist-dark: #f2654c;
+  --color-fascist-light: #e4bcba;
+  --color-hitler: #be0804;
+  --color-merlin: #355fc4;
+  --color-percival: #67caff;
+  --color-morgana: #f69218;
+  --color-monarchist: #f29d78;
+
+  /* UI accents */
+  --color-tourny: #1cb98e;
+  --color-notification: #fbbd08;
+  --color-selection: #db2828;
+  --color-proceed: #2185d0;
+  --color-teal: #097892;
+  --color-teal-dark: #034f61;
+  --color-blacklist: #462c35;
+  --color-thirteen: #1c9cb9;
+  --color-brand: #c36563;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+}

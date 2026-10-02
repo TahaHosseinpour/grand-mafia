@@ -1,0 +1,322 @@
+// Database schema. One file. Never `prisma db push` — always a migration.
+//
+// Ported from the legacy Mongoose models (legacy/models). Conventions:
+// - ids are autoincrement Int; tables and columns are snake_case via @map.
+// - The game engine identifies players by **username** (seats, chats, votes
+//   all carry it), so `username` is unique and `usernameKey` (lowercased)
+//   enforces case-insensitive uniqueness the way the legacy regex check did.
+// - Per-season counters (winsSeason1 … rainbowLossesSeason23 in Mongo) are
+//   rows in `season_stats`, one per user and season.
+// - `gameSettings` stays one JSON document: ~50 UI preferences the client
+//   reads and writes as a unit. Its shape is the Zod schema in
+//   src/features/users/inputs.ts; nothing queries inside it.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum StaffRole {
+  admin
+  editor
+  moderator
+  altmod
+  trialmod
+  veteran
+  contributor
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  username     String     @unique @db.VarChar(16)
+  usernameKey  String     @unique @map("username_key") @db.VarChar(16)
+  passwordHash String     @map("password_hash")
+  email        String?    @db.VarChar(255)
+  verified     Boolean    @default(false)
+  staffRole    StaffRole? @map("staff_role")
+  isContributor   Boolean @default(false) @map("is_contributor")
+  isTournamentMod Boolean @default(false) @map("is_tournament_mod")
+  hasNotDismissedSignupModal Boolean @default(true) @map("has_not_dismissed_signup_modal")
+
+  gameSettings Json    @default("{}") @map("game_settings")
+  bio          String  @default("") @db.VarChar(500)
+  touLastAgreed String? @map("tou_last_agreed") @db.VarChar(20)
+  lastVersionSeen String? @map("last_version_seen") @db.VarChar(20)
+  hasChangedName Boolean @default(false) @map("has_changed_name")
+
+  // Moderation state
+  isBanned     Boolean   @default(false) @map("is_banned")
+  timeoutUntil DateTime? @map("timeout_until")
+  isFixed      Boolean   @default(false) @map("is_fixed")
+
+  // Connection bookkeeping (IP addresses are personal data: never in a DTO)
+  signupIp        String?   @map("signup_ip") @db.VarChar(64)
+  lastConnectedIp String?   @map("last_connected_ip") @db.VarChar(64)
+  lastConnectedAt DateTime? @map("last_connected_at")
+  ipHistory       Json      @default("[]") @map("ip_history")
+
+  // Ranking
+  wins          Int     @default(0)
+  losses        Int     @default(0)
+  rainbowWins   Int     @default(0) @map("rainbow_wins")
+  rainbowLosses Int     @default(0) @map("rainbow_losses")
+  eloOverall    Float   @default(1600) @map("elo_overall")
+  eloSeason     Float   @default(1600) @map("elo_season")
+  maxElo        Float   @default(1600) @map("max_elo")
+  previousDayElo Float? @map("previous_day_elo")
+  xpOverall     Float   @default(0) @map("xp_overall")
+  xpSeason      Float   @default(0) @map("xp_season")
+  previousDayXp Float?  @map("previous_day_xp")
+  isRainbowOverall   Boolean   @default(false) @map("is_rainbow_overall")
+  isRainbowSeason    Boolean   @default(false) @map("is_rainbow_season")
+  dateRainbowOverall DateTime? @map("date_rainbow_overall")
+  isOnFire           Boolean   @default(false) @map("is_on_fire")
+  lastCompletedGame  DateTime? @map("last_completed_game")
+
+  // Cosmetics
+  primaryColor    String? @map("primary_color") @db.VarChar(32)
+  secondaryColor  String? @map("secondary_color") @db.VarChar(32)
+  tertiaryColor   String? @map("tertiary_color") @db.VarChar(32)
+  backgroundColor String? @map("background_color") @db.VarChar(32)
+  textColor       String? @map("text_color") @db.VarChar(32)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  seasonStats   SeasonStat[]
+  badges        Badge[]
+  eloHistory    EloSnapshot[]
+  warnings      Warning[]
+  profile       Profile?
+  emailTokens   EmailToken[]
+  feedback      Feedback[]
+
+  @@map("users")
+}
+
+model SeasonStat {
+  userId        Int @map("user_id")
+  season        Int
+  wins          Int @default(0)
+  losses        Int @default(0)
+  rainbowWins   Int @default(0) @map("rainbow_wins")
+  rainbowLosses Int @default(0) @map("rainbow_losses")
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, season])
+  @@map("season_stats")
+}
+
+model Badge {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  badgeId     String   @map("badge_id") @db.VarChar(64)
+  text        String   @db.VarChar(255)
+  title       String   @db.VarChar(255)
+  dateAwarded DateTime @default(now()) @map("date_awarded")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@map("badges")
+}
+
+model EloSnapshot {
+  id     Int      @id @default(autoincrement())
+  userId Int      @map("user_id")
+  date   DateTime
+  value  Float
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
+  @@map("elo_snapshots")
+}
+
+model Warning {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @map("user_id")
+  text         String   @db.VarChar(2000)
+  moderator    String   @db.VarChar(16)
+  acknowledged Boolean  @default(false)
+  createdAt    DateTime @default(now()) @map("created_at")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("warnings")
+}
+
+model Feedback {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  text      String   @db.VarChar(2000)
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("feedback")
+}
+
+/// Per-player statistics, recomputed from finished games (legacy models/profile).
+model Profile {
+  userId      Int      @id @map("user_id")
+  version     String   @default("") @db.VarChar(20)
+  stats       Json     @default("{}")
+  recentGames Json     @default("[]") @map("recent_games")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+enum EmailTokenPurpose {
+  verify
+  reset_password
+}
+
+/// One-time tokens sent by email. Only the SHA-256 of the token is stored.
+model EmailToken {
+  id        Int               @id @default(autoincrement())
+  userId    Int               @map("user_id")
+  purpose   EmailTokenPurpose
+  tokenHash String            @unique @map("token_hash") @db.Char(64)
+  email     String            @db.VarChar(255)
+  expiresAt DateTime          @map("expires_at")
+  createdAt DateTime          @default(now()) @map("created_at")
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose])
+  @@map("email_tokens")
+}
+
+/// A finished game (legacy models/game). Usernames, not ids: games outlive
+/// renamed or deleted accounts, exactly as before.
+model Game {
+  id             Int      @id @default(autoincrement())
+  uid            String   @unique @db.VarChar(64)
+  name           String   @db.VarChar(100)
+  flag           String?  @db.VarChar(32)
+  date           DateTime @default(now())
+  season         Int
+  playerCount    Int      @map("player_count")
+  playerChats    String?  @map("player_chats") @db.VarChar(16)
+  winningPlayers String[] @map("winning_players")
+  losingPlayers  String[] @map("losing_players")
+  winningTeam    String?  @map("winning_team") @db.VarChar(16)
+  isRainbow      Boolean  @default(false) @map("is_rainbow")
+  eloMinimum     Int?     @map("elo_minimum")
+  casualGame     Boolean  @default(false) @map("casual_game")
+  practiceGame   Boolean  @default(false) @map("practice_game")
+  customGame     Boolean  @default(false) @map("custom_game")
+  unlistedGame   Boolean  @default(false) @map("unlisted_game")
+  isVerifiedOnly Boolean  @default(false) @map("is_verified_only")
+  completed      Boolean  @default(false)
+  /// Remaining options (rebalance flags, timed/blind/monarchist/avalon modes,
+  /// tournament rounds, guesses) as recorded by the engine.
+  settings       Json     @default("{}")
+  chats          Json     @default("[]")
+  hiddenInfoChat Json     @default("[]") @map("hidden_info_chat")
+  /// Turn-by-turn log the profile statistics are computed from.
+  summary        Json?
+
+  @@index([date])
+  @@index([winningPlayers], type: Gin)
+  @@index([losingPlayers], type: Gin)
+  @@map("games")
+}
+
+// ---- Moderation -----------------------------------------------------------
+
+model ModAction {
+  id           Int      @id @default(autoincrement())
+  date         DateTime @default(now())
+  modUserName  String   @map("mod_user_name") @db.VarChar(16)
+  ip           String?  @db.VarChar(64)
+  userActedOn  String?  @map("user_acted_on") @db.VarChar(64)
+  modNotes     String?  @map("mod_notes") @db.VarChar(2000)
+  actionTaken  String   @map("action_taken") @db.VarChar(64)
+
+  @@index([date])
+  @@index([userActedOn])
+  @@map("mod_actions")
+}
+
+model BannedIp {
+  id         Int      @id @default(autoincrement())
+  ip         String   @db.VarChar(64)
+  type       String   @db.VarChar(32)
+  permanent  Boolean  @default(false)
+  bannedDate DateTime @default(now()) @map("banned_date")
+
+  @@index([ip])
+  @@map("banned_ips")
+}
+
+/// A moderator ↔ player direct conversation (legacy ModThread).
+model ModThread {
+  id        String    @id @db.VarChar(64)
+  username  String    @db.VarChar(16)
+  aemMember String    @map("aem_member") @db.VarChar(16)
+  startDate DateTime  @default(now()) @map("start_date")
+  endDate   DateTime? @map("end_date")
+  messages  Json      @default("[]")
+
+  @@index([username])
+  @@map("mod_threads")
+}
+
+model PlayerReport {
+  id              Int      @id @default(autoincrement())
+  date            DateTime @default(now())
+  gameUid         String   @map("game_uid") @db.VarChar(64)
+  reportedPlayer  String   @map("reported_player") @db.VarChar(16)
+  reportingPlayer String   @map("reporting_player") @db.VarChar(16)
+  reason          String   @db.VarChar(64)
+  gameType        String?  @map("game_type") @db.VarChar(32)
+  comment         String   @default("") @db.VarChar(2000)
+  isActive        Boolean  @default(true) @map("is_active")
+
+  @@index([isActive, date])
+  @@map("player_reports")
+}
+
+model PlayerNote {
+  id        Int    @id @default(autoincrement())
+  userName  String @map("user_name") @db.VarChar(16)
+  notedUser String @map("noted_user") @db.VarChar(16)
+  note      String @db.VarChar(1000)
+
+  @@unique([userName, notedUser])
+  @@map("player_notes")
+}
+
+/// Account creations, for moderators (legacy Signups).
+model Signup {
+  id             Int      @id @default(autoincrement())
+  date           DateTime @default(now())
+  userName       String   @map("user_name") @db.VarChar(16)
+  ip             String?  @db.VarChar(64)
+  unobfuscatedIp String?  @map("unobfuscated_ip") @db.VarChar(64)
+  type           String   @db.VarChar(32)
+  email          String?  @db.VarChar(255)
+
+  @@index([date])
+  @@map("signups")
+}
+
+/// Usernames ending in "88" are logged here (legacy EightEightCounter).
+model EightEightCounter {
+  id       Int      @id @default(autoincrement())
+  username String   @db.VarChar(16)
+  date     DateTime @default(now())
+
+  @@map("eight_eight_counter")
+}
+
+/// Small key/value settings the legacy app kept in Redis (db 11).
+model GlobalSetting {
+  key   String @id @db.VarChar(64)
+  value Json
+
+  @@map("global_settings")
+}

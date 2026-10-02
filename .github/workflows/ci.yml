@@ -1,0 +1,49 @@
+# CI — typecheck, lint and engine tests on every pull request.
+#
+# Next 16's build does not run ESLint, so the architecture guards in
+# eslint.config.mjs are enforced here or nowhere. `next build` is the only
+# detector for client/server-boundary and prerender/cache errors, so it runs
+# too.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: typecheck + lint + test + build
+    runs-on: ubuntu-latest
+    env:
+      # `prisma generate` and `next build` need a URL, not a database.
+      DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+      # postinstall runs `prisma generate`; the typecheck needs the client types.
+      - run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm typecheck
+      # The steps below run even when an earlier one failed, so one push reports everything.
+      - name: Lint
+        if: ${{ !cancelled() }}
+        run: pnpm lint
+      - name: Test
+        if: ${{ !cancelled() }}
+        run: pnpm test
+      - name: Build
+        if: ${{ !cancelled() }}
+        run: pnpm build
