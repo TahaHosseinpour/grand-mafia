@@ -116,6 +116,30 @@ browser bundle → build error. Neither tsc nor lint sees it; only
 (`import { action, type DTO } from '@/features/x'`) reintroduces the edge.
 Server components may import either entry point.
 
+### A third entry point: `realtime`
+
+`@/features/<name>/realtime` exists for features the Socket.IO layer drives
+(today `games`). It exports the engine's entry points — the handlers and
+senders `src/realtime` registers — and is importable only from `src/realtime`
+and `server.ts` (ESLint). Pages never import the engine; `countOnlinePlayers`
+and the like stay on the server barrel.
+
+```
+server.ts → src/realtime/{server,connection,handlers,hub}.ts
+          → @/features/games/realtime → engine/*.ts
+                                      → @/features/{users,moderation,ranking}  (barrels)
+```
+
+- `src/realtime/hub.ts` implements the engine's `Hub` / `HubSocket` over
+  Socket.IO; the engine never sees Socket.IO.
+- `src/realtime/handlers.ts` is the only place that maps event names to
+  engine calls and decides who may send them.
+- Live state is `engine/store.ts`, one object on `globalThis` under a
+  registered symbol (the custom server and Next's bundles each load their own
+  copy of the module; the symbol shares one state).
+- Tests replace each feature's `dal.ts` with `src/test/world.ts` and drive the
+  engine through `src/test/fake-hub.ts` or the wire with `src/test/fake-io.ts`.
+
 ### Dependencies between features
 
 - A feature imports another **only through its barrel**, and only along an
@@ -218,7 +242,8 @@ or knows a domain noun, it is in the wrong place.
 | A reusable UI control | `src/components/ui/` + the design-system registry |
 | A cache duration | a `cacheLife` profile in `next.config.ts` |
 | A cache tag | `src/server/cache-tags.ts` |
-| A rate limit | `src/server/rate-limits.ts` |
+| A rate limit | `src/server/rate-limits.ts` (Socket.IO events: the flood limit in `src/realtime/handlers.ts`; chat flood control is engine logic) |
+| A Socket.IO event | a handler in `src/realtime/handlers.ts` over an engine function in `src/features/games/engine`, exported from `games/realtime.ts` |
 | An audit/business event name | `src/server/events.ts` |
 | An admin page | `ADMIN_PAGE_PATHS` in `src/lib/admin-pages.ts` |
 | A public URL builder | `src/server/routes.ts` |

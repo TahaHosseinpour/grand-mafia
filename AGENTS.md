@@ -26,6 +26,7 @@ pnpm dev            # custom server (Next + Socket.IO) on :3000, needs Postgres
 pnpm typecheck      # must be clean
 pnpm lint           # zero errors
 pnpm test           # vitest — the game engine's rules are covered here
+pnpm smoke:game    # a whole game over real sockets against a running dev server + DB
 pnpm build          # also, when the change touches the client/server boundary,
                     # caching/prerendering, next.config.ts or instrumentation
 pnpm db:migrate     # create/apply a migration (never `prisma db push`)
@@ -73,11 +74,19 @@ The feature list is frozen in `src/server/features.ts`; a new domain is agreed f
 2. **The realtime layer is an entry layer.** A Socket.IO event is to
    `src/realtime/` what a request is to `src/app/api/`. Identity comes from
    `socket.data.actor`, resolved once at handshake from the session cookie
-   (`src/server/socket-auth.ts`). **Dal functions called from socket handlers
-   take the `Actor` as their first argument** and must never accept a
-   username/userId from the event payload as "who is acting".
+   (`src/server/socket-auth.ts`). Handlers parse the payload with the feature's
+   Zod input, check the caller may act (signed in, not restricted, seated at
+   the table the payload names) and call the engine
+   (`@/features/games/realtime`). The engine's dal calls are the
+   `…ForRealtime` / `…ForEngine` / `…ForGameEnd` functions: they take a
+   `username` that comes from the verified `Actor` or from the game's own seat
+   list and **must never be given one read from an event payload**. They carry
+   no session check, so they are exported from a feature barrel under that
+   suffix only.
 3. **Live game state is in memory**, in one process, as before. One instance
-   only; a restart drops games in progress. Finished games are persisted.
+   only; a restart drops games in progress. Finished games are persisted. The
+   engine (`src/features/games/engine`) talks to Socket.IO only through the
+   `Hub` interface, so tests run whole games with timers and no network.
 4. **No Sentry.** Errors go to pino; `src/instrumentation.ts` logs escaped
    render errors.
 5. **`server-only` in the custom server.** `scripts/register-hooks.mjs`

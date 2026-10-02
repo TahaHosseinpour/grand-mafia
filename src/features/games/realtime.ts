@@ -7,7 +7,7 @@ export { setHub, findGame, engineStore } from './engine/store';
 export type { Hub, HubSocket } from './engine/hub';
 export type { Game, Caller } from './engine/types';
 
-export { startListBroadcasts, sendGameList, sendUserList } from './engine/lists';
+export { startListBroadcasts, sendGameList, sendUserList, findOnlineUser } from './engine/lists';
 export { startGarbageCollector } from './engine/garbage';
 export { startFlagSync } from './engine/flags';
 export { admitConnection } from './engine/connection';

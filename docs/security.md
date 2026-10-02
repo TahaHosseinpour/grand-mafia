@@ -55,6 +55,23 @@ only one of them passes through any given route.
 - Declaring the check in both factory and dal is correct and free (session
   reads are `cache()`d).
 
+## Sockets
+
+The same three rules, applied to Socket.IO events (`src/realtime/handlers.ts`):
+
+- **Identity** is `socket.data.actor`, read once at handshake from the session
+  cookie. No event carries "who": a `userName` in a payload is ignored
+  (`realtime/handlers.test.ts` sends one and checks it).
+- **Authority** is checked per event: signed in; not restricted (terms of use
+  or a warning waiting — `checkRestriction`); seated at the table the payload
+  names for in-game events; staff power re-read, never trusted from the client.
+- **Payloads** are parsed with the feature's Zod input and dropped, never
+  half-applied, when they do not parse. Events named like Socket.IO's own
+  (`disconnect`, `error`…) are dropped before dispatch, and a connection that
+  sends more than 100 events in 5 seconds is ignored until the window ends.
+- **Game state** reaches a player only through `secureGame` and their own
+  `playersState`; `game.private` never leaves the process.
+
 ## Rule 3 — scope a child write to its parent
 
 `/admin/things/1/faqs/99` carries two ids. A write by the child id alone lets

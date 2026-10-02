@@ -27,6 +27,7 @@ the reference for every port. It is deleted when the last phase lands.
 | Sessions | Signed JWT in an httpOnly cookie (legacy: express-session in Redis/Mongo) |
 | Global settings | `global_settings` table (legacy: Redis db 11) |
 | Error reporting | pino only (no Sentry) |
+| General chat | Lives in `games` (`engine/player-chat.ts`), not `chat`: it needs the online list and shares flood control with the game chat. The `chat` slot stays reserved |
 
 ## Mapping
 
@@ -38,15 +39,52 @@ the reference for every port. It is deleted when the last phase lands.
 | `views/*.pug` | `src/app/(site)/**` |
 | `models/*.js` (Mongoose) | `prisma/schema.prisma` |
 | `routes/socket/game/*` | `src/features/games/engine/*` (pure TS, unit-tested) |
-| `routes/socket/user-events/*`, `user-requests.js`, `routes.js` | `src/realtime/handlers/*` → feature dals |
+| `routes/socket/routes.js` | `src/realtime/{server,connection,handlers}.ts` |
+| `routes/socket/user-events/*`, `user-requests.js`, `commands.js` | `src/features/games/engine/*` (lobby, join/create/remake, claims, chat, settings, restrictions, requests, commands) |
 | `routes/socket/models.js` (in-memory state) | `src/features/games/engine/store.ts` |
 | `routes/socket/user-events/moderation.js`, `mod-*`, `report.js`, `player-reports.js` | `src/features/moderation` |
 | `routes/socket/badges.js`, `models/profile`, ELO in `end-game.js` | `src/features/ranking` |
-| `routes/socket/user-events/chat.js` (general chat) | `src/features/chat` |
+| `routes/socket/user-events/chat.js` (general chat) | `src/features/games/engine/player-chat.ts` |
 | `src/frontend-scripts/components/**` | `src/features/*/components/**` + `src/components/ui/**` |
 | `src/frontend-scripts/reducers`, `sagas`, `actions` | a client store in `src/features/games/components/store` |
 | `src/scss/**`, Semantic UI | Tailwind tokens in `src/app/globals.css` + `src/components/ui` |
 | `public/images`, `public/sounds` | `public/` (moved, same URLs) |
+
+## What phase 2 changed on purpose
+
+The port keeps the flow. Where the legacy code was plainly wrong, it was fixed
+rather than copied, and a test pins each fix:
+
+| Legacy behaviour | Now |
+|---|---|
+| Avalon: the liberal and fascist role lists were shuffled *before* cutting them to the table size, so a small table could lose Merlin, Percival or Morgana (`start-game.js` sliced first — the port had inverted it, found by the Avalon test) | cut first, shuffle after |
+| A game without game chat never cleared the pending chancellor after a rejected government, so nobody could be nominated again | cleared in every game |
+| «Only email-verified players can sit» was shown in the lobby but never checked | checked when sitting |
+| Saving any settings page change with no `isPrivate` in the payload counted as switching the profile to public | only an explicit `isPrivate` that differs counts |
+| `getPlayerNotes` read the notes of whichever `userName` the client sent | the notes of the connected player |
+| Any client could emit Socket.IO's own event names | dropped before dispatch; a flood limit per connection |
+
+Dropped with the features they belonged to: tournaments, replay data, Discord
+webhooks (reports and feedback go to the log and the database).
+
+## Tests
+
+`pnpm test` runs vitest. Data layers (`dal.ts`) are replaced by an in-memory
+`src/test/world.ts` (`src/test/setup.ts`); everything above them is the real
+code.
+
+- `engine/full-game.test.ts` — bots (`src/test/bots.ts`) play 5–10 player
+  games to the end on fake timers with seeded randomness, plus every game
+  option (Avalon, Percival, monarchist, blind, timed, custom powers…). A game
+  that stalls fails with the phase and the last actions.
+- `engine/{lobby,settings,restrictions,connection,garbage,player-chat}.test.ts`
+  — the rules around the table.
+- `realtime/handlers.test.ts` — events through a fake Socket.IO, the way a
+  browser sends them: who may send what, payload validation, reserved names,
+  flood limit, a game played over the wire.
+- `ranking/elo.test.ts`, `engine/line-guess.test.ts`, `lib/tou.test.ts`.
+
+`pnpm smoke:game` is the end-to-end check against a real server and database.
 
 ## Phases and status
 
@@ -59,9 +97,15 @@ the reference for every port. It is deleted when the last phase lands.
   terms, about; stats is a placeholder until phase 4. `/game` and `/observe`
   are placeholders until phase 3. Verified in a browser against the legacy
   screenshots (desktop + phone width).
-- [ ] **2 — Game engine.** Port `routes/socket/game/**` and the lobby/seat
-  events to TypeScript with the same event names and payloads; vitest suite
-  over the rules; finished games persisted.
+- [x] **2 — Game engine and realtime.** `routes/socket/game/**`, the lobby and
+  seat events, chat, claims, remakes, slash commands and the Socket.IO wiring
+  are TypeScript, with the legacy event names and payloads (so the phase-3
+  client can be ported 1:1). Persian game text. Finished games, Elo and XP
+  are persisted. 182 vitest tests (see below) and `pnpm smoke:game` (five
+  socket clients play a whole game against a running server and PostgreSQL).
+  Deferred on purpose: staff-only slash commands and the moderation events
+  (phase 5), badges and profile statistics (phase 4), cardback upload, Flappy
+  Hitler and the changelog (phase 6).
 - [ ] **3 — Game client.** Lobby, create game, the table (tracks, players,
   cards, votes, powers), game chat, general chat, player list, settings,
   profile — Persian, responsive, Tailwind components matching the legacy look.

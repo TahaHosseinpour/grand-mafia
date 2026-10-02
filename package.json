@@ -19,6 +19,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "smoke:game": "tsx --import ./scripts/register-hooks.mjs scripts/smoke-game.ts",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed"

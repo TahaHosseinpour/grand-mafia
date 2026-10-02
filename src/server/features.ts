@@ -12,7 +12,9 @@ export const FEATURES = [
   'users',
   // The game: in-memory engine, lobby, seats, game chat, finished-game records.
   'games',
-  // The lobby-wide general chat.
+  // The lobby-wide general chat. Reserved: today it lives in `games`
+  // (engine/player-chat.ts) because it shares the online list and the game
+  // chat's flood control with the engine; it moves here if it grows storage.
   'chat',
   // Staff tools: bans, timeouts, reports, mod DMs, mod log, signups.
   'moderation',

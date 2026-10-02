@@ -42,10 +42,12 @@ export async function handleSeatRequest(socket: HubSocket, caller: Caller, raw: 
     !game.general.private || data.password === game.private.privatePassword || game.general.whitelistedPlayers.includes(caller.username);
   const meetsElo = !game.general.eloMinimum || game.general.eloMinimum <= account.eloSeason || game.general.eloMinimum <= account.eloOverall;
   const meetsXp = !game.general.xpMinimum || game.general.xpMinimum <= account.xpOverall;
+  // The lobby promises «only email-verified players can sit»; the legacy server never checked.
+  const isVerifiedSafe = !game.general.isVerifiedOnly || account.verified;
 
   if (account.wins + account.losses < 3 && engineStore().flags.limitNewPlayers && !game.general.private) return;
 
-  if (!(isNotMaxedOut && isNotInGame && isRainbowSafe && isPrivateSafe && meetsElo && meetsXp)) return;
+  if (!(isNotMaxedOut && isNotInGame && isRainbowSafe && isPrivateSafe && meetsElo && meetsXp && isVerifiedSafe)) return;
 
   game.publicPlayersState.unshift(newSeat(caller.username, account.gameSettings));
 

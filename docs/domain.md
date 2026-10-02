@@ -21,7 +21,7 @@ Grows as features are ported (see `migration.md`).
 | Game settings (تنظیمات بازی) | `users` | `users.game_settings` (JSON) |
 | Live game, seats, votes, policies | `games` | engine memory |
 | Finished game record | `games` | `games` |
-| General chat (چت عمومی) | `chat` | memory (last N messages) |
+| General chat (چت عمومی) | `games` (`engine/player-chat.ts`) | engine memory (last 99 messages) |
 | ELO / XP / seasons / leaderboards | `ranking` | `users`, `season_stats`, `elo_snapshots` |
 | Badges (نشان‌ها) | `ranking` | `badges` |
 | Profile statistics | `ranking` | `profiles` |
@@ -29,3 +29,8 @@ Grows as features are ported (see `migration.md`).
 | Player report (گزارش) | `moderation` | `player_reports` |
 | Mod DM thread | `moderation` | `mod_threads` |
 | Custom cardback | `cosmetics` | file in `UPLOADS_DIR` + `users.game_settings.customCardback` |
+| Online list (بازیکنان آنلاین) | `games` | engine memory (`userList`) |
+| Terms of use versions (شرایط استفاده) | `users` + `src/lib/tou.ts` | `users.tou_last_agreed` |
+| Warning (اخطار) | `moderation` (written), `users` (acknowledged by the player) | `warnings` |
+| Feedback (بازخورد) | `users` | `feedback` |
+| Moderator switches (new games off, limit new players…) | `moderation` | `global_settings`, mirrored into engine memory every 30 s |

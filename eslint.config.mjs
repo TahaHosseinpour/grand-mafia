@@ -186,6 +186,14 @@ const config = [
     },
   },
 
+  // Test support stands in for the data layers and reaches inside features to do it.
+  {
+    files: ['src/test/**/*.ts'],
+    rules: {
+      'no-restricted-imports': ['error', { paths: [BAN_DB, BAN_ZOD] }],
+    },
+  },
+
   // Routes reach auth only through defineRoute.
   {
     files: ['src/app/api/**/*.ts'],
