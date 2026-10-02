@@ -24,3 +24,17 @@ export function staffPower(role: StaffRole | null | undefined): number {
 export function isAem(role: StaffRole | null | undefined): boolean {
   return role === 'admin' || role === 'editor' || role === 'moderator' || role === 'altmod' || role === 'trialmod';
 }
+
+/**
+ * Moderator, editor or admin — the roles that count as "AEM" for chat
+ * commands and moderator-only abilities in a game. Trial/alt moderators and
+ * veterans have narrower powers.
+ */
+export function isFullStaff(role: StaffRole | '' | null | undefined): boolean {
+  return role === 'admin' || role === 'editor' || role === 'moderator';
+}
+
+/** The staff label shown beside a chat message ("" for everyone else). */
+export function chatStaffLabel(role: StaffRole | '' | null | undefined): 'moderator' | 'editor' | 'admin' | undefined {
+  return isFullStaff(role) ? (role as 'moderator' | 'editor' | 'admin') : undefined;
+}

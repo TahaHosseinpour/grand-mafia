@@ -1,5 +1,6 @@
 import type { Serializable } from '@/server/types';
 import type { StaffRole } from '@/lib/prisma-enums';
+import type { UserGameSettings } from './settings';
 
 /** The signed-in user's own account, for the account page. */
 export type AccountDTO = {
@@ -26,5 +27,41 @@ export type CredentialsForAuth = {
   ignoreIpBans: boolean;
 };
 
+/**
+ * Everything the realtime layer needs to know about a connected player: who
+ * they are to the lobby (names, colours, ratings) and their saved settings.
+ * Never sent to a client as is — the engine copies out the public part.
+ */
+export type PresenceDTO = {
+  userId: number;
+  username: string;
+  staffRole: StaffRole | null;
+  isContributor: boolean;
+  isTournamentMod: boolean;
+  verified: boolean;
+  isBanned: boolean;
+  timeoutUntil: string | null;
+  lastConnectedIp: string | null;
+  touLastAgreed: string | null;
+  hasNotDismissedSignupModal: boolean;
+  lastVersionSeen: string | null;
+  bio: string;
+  gameSettings: UserGameSettings;
+  wins: number;
+  losses: number;
+  rainbowWins: number;
+  rainbowLosses: number;
+  winsSeason: number;
+  lossesSeason: number;
+  rainbowWinsSeason: number;
+  rainbowLossesSeason: number;
+  isRainbowOverall: boolean;
+  isRainbowSeason: boolean;
+  eloOverall: number;
+  eloSeason: number;
+  xpOverall: number;
+  xpSeason: number;
+};
+
 type AssertSerializable<T extends Serializable> = T;
-export type _PlainDataChecks = [AssertSerializable<AccountDTO>, AssertSerializable<CredentialsForAuth>];
+export type _PlainDataChecks = [AssertSerializable<AccountDTO>, AssertSerializable<CredentialsForAuth>, AssertSerializable<PresenceDTO>];

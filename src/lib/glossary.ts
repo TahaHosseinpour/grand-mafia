@@ -46,3 +46,21 @@ export const T = {
   rainbow: 'رنگین‌کمانی',
   xp: 'امتیاز تجربه',
 } as const;
+
+/** «لیبرال» / «فاشیستی» as an adjective for a policy or a card. */
+export const policyAdjective = (policy: 'liberal' | 'fascist'): string => (policy === 'liberal' ? 'لیبرال' : 'فاشیستی');
+
+/** The team's name as a noun, e.g. for «تیم لیبرال». */
+export const teamName = (team: 'liberal' | 'fascist'): string => (team === 'liberal' ? T.liberal : T.fascist);
+
+/** The Persian name of a role card. */
+export const roleLabel = (role: 'liberal' | 'fascist' | 'hitler' | 'merlin' | 'percival' | 'morgana' | 'monarchist'): string =>
+  ({
+    liberal: T.liberal,
+    fascist: T.fascist,
+    hitler: T.hitler,
+    merlin: T.merlin,
+    percival: T.percival,
+    morgana: T.morgana,
+    monarchist: T.monarchist,
+  })[role];

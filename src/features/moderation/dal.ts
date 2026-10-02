@@ -1,5 +1,6 @@
 import 'server-only';
 import prisma from '@/server/db';
+import { EVENTS, logEvent } from '@/server/events';
 import { log } from '@/server/logger';
 import { doesIPMatchCIDR, obfIP, withDefaultIPv6Range } from './ip';
 import type { IpBanStatus } from './types';
@@ -100,4 +101,37 @@ export async function recordNewAccountIpBan(ip: string): Promise<void> {
 /** Usernames ending in 88 are refused and counted (legacy EightEightCounter). */
 export async function recordEightEight(username: string): Promise<void> {
   await prisma.eightEightCounter.create({ data: { username: username.slice(0, 16) } });
+}
+
+/**
+ * An automatic report or moderator ping raised from a game. Without Discord
+ * to post it to, it is written to the server log as a security-style event
+ * the moderation panel (phase 5) will read from the database.
+ */
+export type AutoReportInput = {
+  kind: 'report' | 'modchat' | 'ping';
+  delayed: boolean;
+  player: string;
+  seat?: number;
+  role?: string;
+  situation: string;
+  election?: number;
+  gameUid?: string;
+  gameTitle?: string;
+  gameType?: string;
+  seatedUserNames: string[];
+};
+
+export function reportToModerators(report: AutoReportInput): void {
+  logEvent(EVENTS.MOD_REPORT_FILED, {
+    kind: report.kind,
+    delayed: report.delayed,
+    player: report.player,
+    seat: report.seat,
+    role: report.role,
+    situation: report.situation,
+    election: report.election,
+    game: report.gameUid,
+    gameType: report.gameType,
+  });
 }
