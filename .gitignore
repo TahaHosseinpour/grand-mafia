@@ -57,8 +57,3 @@ public/images/emotesheet.png
 .snyk
 .travis.yml
 core
-
-# Local AI-agent guidance (not committed)
-CLAUDE.md
-AGENTS.md
-.claude/
