@@ -7,6 +7,38 @@
  */
 @theme {
   --font-sans: var(--font-vazirmatn), Tahoma, sans-serif;
+  /* Headings, big buttons, card titles. */
+  --font-display: var(--font-lalezar), var(--font-vazirmatn), Tahoma, sans-serif;
+
+  /*
+   * Game UI (the 2026 redesign: dark, warm, mobile-first). Paper cards on a
+   * charcoal table, one orange accent, blue for liberals, red for fascists.
+   */
+  --color-ink: #131211;
+  --color-surface: #1c1a18;
+  --color-surface-2: #252220;
+  --color-surface-3: #302c29;
+  --color-line: #3b3632;
+  --color-fg: #f3ede5;
+  --color-fg-muted: #b1a79c;
+  --color-fg-faint: #7a7169;
+  --color-paper: #f2e4c7;
+  --color-paper-shade: #d8c49e;
+  --color-paper-ink: #2b2118;
+  --color-header: #3a1c12;
+  --color-accent: #e15a2b;
+  --color-accent-strong: #f26d3d;
+  --color-accent-deep: #9f3a16;
+  --color-lib: #3e88a8;
+  --color-lib-deep: #1d4656;
+  --color-lib-soft: #9fd5e3;
+  --color-fas: #c8432a;
+  --color-fas-deep: #6a1d13;
+  --color-fas-soft: #f3a286;
+  --color-hit: #8e160c;
+  --color-gold: #e8b34b;
+  --color-ok: #4dae6d;
+  --color-danger: #d93f3f;
 
   /* Teams and roles (legacy variables.scss) */
   --color-liberal: #608cb3;
@@ -63,9 +95,9 @@
 }
 
 @layer base {
-  /* Semantic UI's base: 14px root, so rem-based sizes match the legacy layout. */
   html {
-    font-size: 14px;
+    font-size: 16px;
+    -webkit-tap-highlight-color: transparent;
   }
 
   html,
@@ -98,14 +130,22 @@
   background: #bfbfbf;
 }
 
-/* The legacy modals flipped in ("horizontal flip"); a short flip-in keeps the feel. */
-@keyframes modal-in {
+/* Dialogs: a sheet slides up on phones, a card pops in on larger screens. */
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes pop-in {
   from {
     opacity: 0;
-    transform: perspective(2000px) rotateY(-90deg);
+    transform: scale(0.96);
   }
   to {
     opacity: 1;
-    transform: perspective(2000px) rotateY(0deg);
+    transform: scale(1);
   }
 }

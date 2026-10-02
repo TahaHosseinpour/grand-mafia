@@ -11,6 +11,20 @@ export type AccountDTO = {
 };
 
 /**
+ * What the game client needs about its own player when the page loads
+ * (legacy `game.pug` globals): identity and settings. The blacklist is part
+ * of the settings; nothing else private is.
+ */
+export type GameBootstrapDTO = {
+  username: string;
+  staffRole: StaffRole | null;
+  verified: boolean;
+  isTournamentMod: boolean;
+  hasNotDismissedSignupModal: boolean;
+  gameSettings: UserGameSettings;
+};
+
+/**
  * What the auth flow needs to check a sign-in. Contains the password hash:
  * **never** returned from an action, route or page — it stays inside the
  * auth dal.
@@ -64,4 +78,4 @@ export type PresenceDTO = {
 };
 
 type AssertSerializable<T extends Serializable> = T;
-export type _PlainDataChecks = [AssertSerializable<AccountDTO>, AssertSerializable<CredentialsForAuth>, AssertSerializable<PresenceDTO>];
+export type _PlainDataChecks = [AssertSerializable<GameBootstrapDTO>, AssertSerializable<AccountDTO>, AssertSerializable<CredentialsForAuth>, AssertSerializable<PresenceDTO>];

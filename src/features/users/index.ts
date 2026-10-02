@@ -13,6 +13,7 @@ export {
   markEmailVerifiedForAuth,
   deleteUserForAuth,
   getMyAccount,
+  getMyGameBootstrap,
   getEloForGameStart,
   loadPresenceForRealtime,
   saveGameSettingsForRealtime,
@@ -29,7 +30,7 @@ export {
   listPlayerNotesForRealtime,
 } from './dal';
 export type { AccountDTO, CredentialsForAuth } from './types';
-export type { PresenceDTO } from './types';
+export type { PresenceDTO, GameBootstrapDTO } from './types';
 export type { UserGameSettings, BlacklistEntry, GameFilters } from './settings';
 export { PLAYER_EDITABLE_SETTINGS, STAFF_EDITABLE_SETTINGS, PRONOUN_OPTIONS } from './settings';
 export { themeInput, gameSettingsInput, blacklistInput, bioInput, THEME_COLOR_FIELDS } from './inputs';

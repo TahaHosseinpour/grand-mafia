@@ -1,10 +1,10 @@
 import { cn } from '@/lib/utils';
 
-/** Semantic UI message box: info (blue), negative (red), positive (green). */
+/** A notice: info (blue), negative (red), positive (green). */
 const VARIANTS = {
-  info: 'bg-ui-info-bg text-ui-info-text shadow-[inset_0_0_0_1px_var(--color-ui-info-border)]',
-  negative: 'bg-ui-negative-bg text-ui-negative-text shadow-[inset_0_0_0_1px_var(--color-ui-negative-border)]',
-  positive: 'bg-ui-positive-bg text-ui-positive-text shadow-[inset_0_0_0_1px_var(--color-ui-positive-border)]',
+  info: 'border-lib bg-lib/12 text-lib-soft',
+  negative: 'border-danger bg-danger/12 text-[#f6a3a3]',
+  positive: 'border-ok bg-ok/12 text-[#a8e2bb]',
 } as const;
 
 export function Message({
@@ -15,7 +15,7 @@ export function Message({
   return (
     <div
       role={variant === 'negative' ? 'alert' : 'status'}
-      className={cn('my-[1em] rounded-ui px-[1.5em] py-[1em] leading-[1.4285em]', VARIANTS[variant], className)}
+      className={cn('my-4 rounded-xl border-s-4 px-4 py-3 leading-relaxed', VARIANTS[variant], className)}
       {...props}
     />
   );

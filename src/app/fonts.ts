@@ -14,3 +14,16 @@ export const vazirmatn = localFont({
   display: 'swap',
   variable: '--font-vazirmatn',
 });
+
+/**
+ * Lalezar, the display face for headings and big buttons in the game
+ * (Arabic-script subset; Latin falls back to Vazirmatn). SIL OFL
+ * (fonts/OFL-lalezar.txt).
+ */
+export const lalezar = localFont({
+  src: './fonts/lalezar-arabic.woff2',
+  weight: '400',
+  style: 'normal',
+  display: 'swap',
+  variable: '--font-lalezar',
+});

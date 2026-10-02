@@ -3,7 +3,7 @@ import prisma from '@/server/db';
 import type { Prisma } from '@/generated/prisma/client';
 import { requireUserId } from '@/server/auth';
 import { NotFoundError } from '@/server/errors';
-import type { AccountDTO, CredentialsForAuth } from './types';
+import type { AccountDTO, CredentialsForAuth, GameBootstrapDTO } from './types';
 
 /**
  * The `users` data layer.
@@ -179,6 +179,34 @@ export async function getMyAccount(): Promise<AccountDTO> {
     email: user.email,
     verified: user.verified,
     createdAt: user.createdAt.toISOString(),
+  };
+}
+
+/**
+ * The signed-in player's identity and settings for the game client
+ * page. Banned accounts never get here: the session check refuses them.
+ */
+export async function getMyGameBootstrap(): Promise<GameBootstrapDTO> {
+  const userId = await requireUserId();
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      username: true,
+      staffRole: true,
+      verified: true,
+      isTournamentMod: true,
+      hasNotDismissedSignupModal: true,
+      gameSettings: true,
+    },
+  });
+  if (!user) throw new NotFoundError('حساب کاربری یافت نشد');
+  return {
+    username: user.username,
+    staffRole: user.staffRole,
+    verified: user.verified,
+    isTournamentMod: user.isTournamentMod,
+    hasNotDismissedSignupModal: user.hasNotDismissedSignupModal,
+    gameSettings: asSettings(user.gameSettings),
   };
 }
 

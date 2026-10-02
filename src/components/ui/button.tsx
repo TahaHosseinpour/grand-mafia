@@ -2,44 +2,58 @@ import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
 /**
- * The Semantic UI button the legacy app used everywhere, rebuilt on tokens.
+ * The button. Chunky and tactile: a solid face over a darker base that it
+ * presses into (`active:translate-y`), in the display face from `md` up.
  *
- * variant: `default` (grey), `primary` (blue), `lobby` (the orange "Game
- * Lobby" button), `liberal` (the blue sign-in pair), `negative`.
+ * variant: `primary` (the orange call to action), `secondary`, `ghost`,
+ * `danger`, `lib` / `fas` (team-coloured).
  */
 const VARIANTS = {
-  default: 'bg-ui-grey text-ui-text-muted hover:bg-ui-grey-hover hover:text-ui-text',
-  primary: 'bg-ui-primary text-white hover:bg-ui-primary-hover',
-  lobby: 'bg-fascist text-white hover:bg-fascist',
-  liberal: 'bg-liberal text-white hover:bg-liberal',
-  negative: 'bg-[#db2828] text-white hover:bg-[#d01919]',
+  primary: 'bg-accent text-white shadow-[0_4px_0_var(--color-accent-deep)] hover:bg-accent-strong',
+  secondary: 'bg-surface-3 text-fg shadow-[0_4px_0_#151311] hover:bg-[#3a3531]',
+  ghost: 'bg-transparent text-fg-muted shadow-none hover:bg-surface-3 hover:text-fg active:translate-y-0',
+  danger: 'bg-danger text-white shadow-[0_4px_0_#7d1d1d] hover:bg-[#e24b4b]',
+  lib: 'bg-lib text-white shadow-[0_4px_0_var(--color-lib-deep)] hover:bg-[#4795b6]',
+  fas: 'bg-fas text-white shadow-[0_4px_0_var(--color-fas-deep)] hover:bg-[#d44f35]',
 } as const;
 
 const SIZES = {
-  small: 'text-[0.92857143rem]',
-  default: 'text-base',
-  large: 'text-[1.28571429rem]',
+  sm: 'h-9 rounded-lg px-3 text-[0.9375rem] font-bold',
+  md: 'h-11 rounded-xl px-5 font-display text-[1.25rem]',
+  lg: 'h-14 rounded-2xl px-8 font-display text-[1.6rem]',
 } as const;
 
+/** Names the first version of the site used; kept so older call sites read the same. */
+const VARIANT_ALIASES = { default: 'secondary', lobby: 'primary', liberal: 'lib', negative: 'danger' } as const;
+const SIZE_ALIASES = { small: 'sm', default: 'md', large: 'lg' } as const;
+
+type Variant = keyof typeof VARIANTS | keyof typeof VARIANT_ALIASES;
+type Size = keyof typeof SIZES | keyof typeof SIZE_ALIASES;
+
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: keyof typeof VARIANTS;
-  size?: keyof typeof SIZES;
+  variant?: Variant;
+  size?: Size;
   /** Full width. */
   fluid?: boolean;
 };
 
+const resolveVariant = (variant: Variant) => (variant in VARIANT_ALIASES ? VARIANT_ALIASES[variant as keyof typeof VARIANT_ALIASES] : (variant as keyof typeof VARIANTS));
+const resolveSize = (size: Size) => (size in SIZE_ALIASES ? SIZE_ALIASES[size as keyof typeof SIZE_ALIASES] : (size as keyof typeof SIZES));
+
 export function buttonClasses({
-  variant = 'default',
-  size = 'default',
+  variant = 'secondary',
+  size = 'md',
   fluid = false,
   className,
 }: Pick<ButtonProps, 'variant' | 'size' | 'fluid' | 'className'>) {
   return cn(
-    'inline-block min-h-[1em] cursor-pointer select-none rounded-ui px-[1.5em] py-[0.78571429em] text-center font-bold leading-none no-underline transition-colors duration-100',
-    'disabled:pointer-events-none disabled:opacity-45 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ui-primary',
-    VARIANTS[variant],
-    SIZES[size],
-    fluid && 'block w-full',
+    'inline-flex cursor-pointer select-none items-center justify-center gap-2 whitespace-nowrap leading-none no-underline transition-[transform,background-color,box-shadow] duration-100',
+    'active:translate-y-[3px] active:shadow-none',
+    'disabled:pointer-events-none disabled:opacity-45 disabled:shadow-none',
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+    VARIANTS[resolveVariant(variant)],
+    SIZES[resolveSize(size)],
+    fluid && 'flex w-full',
     className
   );
 }
