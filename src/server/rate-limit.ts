@@ -1,5 +1,5 @@
 import 'server-only';
-import { headers } from 'next/headers';
+import { getClientIp } from './client-ip';
 import { RATE_LIMITS, type RateLimitConfig, type RateLimitName, type SubjectKeyedLimit } from './rate-limits';
 import { RateLimitError } from './errors';
 import { EVENTS, logSecurityEvent } from './events';
@@ -68,26 +68,6 @@ export function checkRateLimit(
 
   entry.count++;
   return { success: true, remaining: config.maxRequests - entry.count, resetTime: entry.resetTime };
-}
-
-/**
- * The client IP.
- *
- * `x-real-ip` first: the reverse proxy (nginx) must be configured to
- * **overwrite** it with the real peer address. `x-forwarded-for` is a
- * fallback only — unless the proxy replaces it, a client can pre-seed the
- * chain and pick its own bucket. Without a correctly configured proxy neither
- * header can be trusted; that is a deployment requirement.
- *
- * Reads `headers()` rather than a `Request` because a Server Action has none.
- */
-async function getClientIp(): Promise<string> {
-  const headerList = await headers();
-  const realIp = headerList.get('x-real-ip');
-  if (realIp) return realIp.trim();
-  const forwarded = headerList.get('x-forwarded-for');
-  if (forwarded) return forwarded.split(',')[0].trim();
-  return 'unknown';
 }
 
 function retryMessage(seconds: number): string {

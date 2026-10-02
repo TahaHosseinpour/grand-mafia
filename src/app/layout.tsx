@@ -24,7 +24,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fa" dir="rtl" className={vazirmatn.variable}>
-      <body>{children}</body>
+      <body className="bg-site-bg">{children}</body>
     </html>
   );
 }

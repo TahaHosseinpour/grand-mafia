@@ -53,9 +53,12 @@ the reference for every port. It is deleted when the last phase lands.
 - [x] **0 — Foundation.** Next 16 + TS strict + Prisma 7 + PostgreSQL + Tailwind 4,
   Vazirmatn, RTL root layout, `src/server` infrastructure, ESLint guards,
   custom server with Socket.IO handshake auth, health check, CI.
-- [ ] **1 — Accounts.** Prisma schema in use; sign-up/in/out, email
-  verification, password reset, account page; static pages in Persian (home,
-  rules, how to play, terms, about, stats shell).
+- [x] **1 — Accounts.** Prisma schema in use; sign-up/in/out (IP-ban checks,
+  signups log, 88/blocked-word/disposable-email rules), email verification,
+  password reset, account page; Persian pages: home, rules, how to play,
+  terms, about; stats is a placeholder until phase 4. `/game` and `/observe`
+  are placeholders until phase 3. Verified in a browser against the legacy
+  screenshots (desktop + phone width).
 - [ ] **2 — Game engine.** Port `routes/socket/game/**` and the lobby/seat
   events to TypeScript with the same event names and payloads; vitest suite
   over the rules; finished games persisted.

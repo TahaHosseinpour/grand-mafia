@@ -30,13 +30,82 @@
   --color-blacklist: #462c35;
   --color-thirteen: #1c9cb9;
   --color-brand: #c36563;
+
+  /* Semantic UI surface tokens the legacy app was built on */
+  --color-ui-grey: #e0e1e2;
+  --color-ui-grey-hover: #cacbcd;
+  --color-ui-primary: #2185d0;
+  --color-ui-primary-hover: #1678c2;
+  --color-ui-border: rgb(34 36 38 / 0.15);
+  --color-ui-text: rgb(0 0 0 / 0.87);
+  --color-ui-text-muted: rgb(0 0 0 / 0.6);
+  --color-ui-placeholder: rgb(191 191 191 / 0.87);
+  --color-ui-info-bg: #f8ffff;
+  --color-ui-info-text: #276f86;
+  --color-ui-info-border: #a9d5de;
+  --color-ui-negative-bg: #fff6f6;
+  --color-ui-negative-text: #9f3a38;
+  --color-ui-negative-border: #e0b4b4;
+  --color-ui-positive-bg: #fcfff5;
+  --color-ui-positive-text: #2c662d;
+  --color-ui-positive-border: #a3c293;
+  --color-ui-link: #4183c4;
+
+  /* Site chrome (legacy style-web.scss) */
+  --color-site-bg: #201212;
+  --color-site-panel: #030000;
+  --color-site-text: #cccccc;
+  --color-site-heading: #eeeeee;
+  --color-site-aside: #e85019;
+  --color-online: #85d42a;
+
+  --radius-ui: 0.28571429rem;
 }
 
-html,
-body {
-  min-height: 100%;
+@layer base {
+  /* Semantic UI's base: 14px root, so rem-based sizes match the legacy layout. */
+  html {
+    font-size: 14px;
+  }
+
+  html,
+  body {
+    min-height: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.4285em;
+  }
+
+  a {
+    color: var(--color-ui-link);
+  }
+  a:hover {
+    color: #1e70bf;
+  }
 }
 
-body {
-  font-family: var(--font-sans);
+/* Thin scrollbars, as in the legacy site */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background: #717171;
+}
+::-webkit-scrollbar-track {
+  background: #bfbfbf;
+}
+
+/* The legacy modals flipped in ("horizontal flip"); a short flip-in keeps the feel. */
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: perspective(2000px) rotateY(-90deg);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(2000px) rotateY(0deg);
+  }
 }

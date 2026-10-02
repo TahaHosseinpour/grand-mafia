@@ -31,8 +31,9 @@ export type FeatureName = (typeof FEATURES)[number];
  * import edge adds it here too, with a comment saying *why*.
  */
 export const FEATURE_LAYERS: Record<FeatureName, readonly FeatureName[]> = {
-  // Sign-up creates the account row; sign-in reads it.
-  auth: ['users'],
+  // Sign-up creates the account row; sign-in reads it. Both check IP bans
+  // and write the signups log moderators review.
+  auth: ['users', 'moderation'],
   users: [],
   // A finished game updates ranking (ELO, XP, badges, profile stats); seats
   // read players' settings and moderation state (bans, timeouts).
