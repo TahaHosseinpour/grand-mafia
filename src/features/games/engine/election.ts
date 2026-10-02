@@ -908,8 +908,10 @@ export function selectVoting(caller: Caller, game: Game, data: { vote: boolean }
                 `انتخابات رد می‌شود و ${T.electionTracker} یک خانه جلو می‌رود. (${formatNumber(game.trackState.electionTrackerCount + 1)}/${formatNumber(3)})`
               )
             );
-            game.gameState.pendingChancellorIndex = null;
           }
+          // The legacy engine cleared this only when the chat line was sent, so a game
+          // without game chat could never nominate again after a rejected government.
+          game.gameState.pendingChancellorIndex = null;
 
           failedElection();
         }

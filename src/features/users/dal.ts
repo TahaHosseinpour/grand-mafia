@@ -205,6 +205,7 @@ export async function getEloForGameStart(usernames: string[]): Promise<Record<st
 
 import { CURRENT_SEASON_NUMBER } from '@/lib/game-constants';
 import type { PresenceDTO } from './types';
+import { THEME_COLOR_FIELDS } from './inputs';
 import type { UserGameSettings } from './settings';
 
 const asSettings = (value: unknown): UserGameSettings =>
@@ -260,6 +261,17 @@ export async function saveGameSettingsForRealtime(username: string, settings: Us
 
 export async function saveBioForRealtime(username: string, bio: string): Promise<void> {
   await prisma.user.update({ where: { usernameKey: usernameKey(username) }, data: { bio } });
+}
+
+/** Saves the profile colours a player picked; only the fields present change. */
+export async function saveThemeForRealtime(username: string, colors: Partial<Record<(typeof THEME_COLOR_FIELDS)[number], string>>): Promise<void> {
+  const data: Prisma.UserUpdateInput = {};
+  for (const field of THEME_COLOR_FIELDS) {
+    const value = colors[field];
+    if (value) data[field] = value;
+  }
+  if (Object.keys(data).length === 0) return;
+  await prisma.user.update({ where: { usernameKey: usernameKey(username) }, data });
 }
 
 export async function acceptTermsForRealtime(username: string, version: string): Promise<void> {
@@ -320,4 +332,12 @@ export async function findStaffAmongForRealtime(usernames: string[]): Promise<st
     select: { username: true },
   });
   return rows.map((row) => row.username);
+}
+
+/** The notes `username` wrote about the given players (the seated players of a table they are looking at). */
+export async function listPlayerNotesForRealtime(username: string, notedUsers: string[]) {
+  return prisma.playerNote.findMany({
+    where: { userName: username, notedUser: { in: notedUsers } },
+    select: { userName: true, notedUser: true, note: true },
+  });
 }

@@ -11,11 +11,10 @@ import { isLegalGameName } from '@/lib/game-constants';
 /** A seat number: a non-negative integer (the range is checked against the table). */
 const seatIndex = z.number().int().nonnegative();
 
-export const seatInput = (field: string) => z.object({ [field]: seatIndex } as Record<string, typeof seatIndex>).loose();
 export const voteInput = z.object({ vote: z.boolean() }).loose();
 export const policySelectionInput = z.object({ selection: z.number().int().min(0).max(3) }).loose();
-export const chancellorInput = seatInput('chancellorIndex');
-export const playerIndexInput = seatInput('playerIndex');
+export const chancellorInput = z.object({ chancellorIndex: seatIndex }).loose();
+export const playerIndexInput = z.object({ playerIndex: seatIndex }).loose();
 
 /** number, or a non-empty numeric string, coerced; anything else passes through to be rejected. */
 const coerceNumeric = (value: unknown) =>

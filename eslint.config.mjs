@@ -47,13 +47,19 @@ const LEGACY_FILES = [
 
 /**
  * A feature has two public entry points: `@/features/<name>` (server) and
- * `@/features/<name>/client` (components). Everything else is private, and
- * `system` is cron-only (re-permitted in the cron block below).
+ * `@/features/<name>/client` (components). Everything else is private;
+ * `system` is cron-only and `realtime` is for the Socket.IO layer
+ * (`src/realtime`, `server.ts`) — each re-permitted in its own block below.
  */
 const NO_DEEP_FEATURE_IMPORT = {
   group: ['@/features/*/*', '!@/features/*/client'],
   message:
-    'A feature has two public entry points: `@/features/<name>` for server code and `@/features/<name>/client` for components. Everything else inside it is private, and `system` is cron-only.',
+    'A feature has two public entry points: `@/features/<name>` for server code and `@/features/<name>/client` for components. Everything else inside it is private; `system` is cron-only and `realtime` is for the Socket.IO layer.',
+};
+
+const REALTIME_FEATURE_IMPORT = {
+  group: ['@/features/*/*', '!@/features/*/client', '!@/features/*/realtime'],
+  message: 'The Socket.IO layer may import a feature barrel or its `realtime` subpath, nothing else inside it.',
 };
 
 const CRON_FEATURE_IMPORT = {
@@ -168,6 +174,15 @@ const config = [
     files: DAL_FILES,
     rules: {
       'no-restricted-imports': ['error', { paths: [BAN_ZOD], patterns: [NO_DEEP_FEATURE_IMPORT] }],
+    },
+  },
+
+  // The Socket.IO layer additionally gets `@/features/<name>/realtime` (the engine's entry points).
+  {
+    files: ['src/realtime/**/*.ts', 'server.ts'],
+    ignores: [...LEGACY_FILES],
+    rules: {
+      'no-restricted-imports': ['error', { paths: [BAN_DB, BAN_ZOD], patterns: [REALTIME_FEATURE_IMPORT] }],
     },
   },
 

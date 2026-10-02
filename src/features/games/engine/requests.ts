@@ -1,4 +1,5 @@
-import { findUnacknowledgedWarningForRealtime } from '@/features/users';
+import { listPlayerNotesForRealtime } from '@/features/users';
+import { rootLogger } from '@/server/logger';
 import { sendInProgressGameUpdate } from './updates';
 import { sendGameList, sendUserList, updateUserStatus } from './lists';
 import { engineStore } from './store';
@@ -50,4 +51,21 @@ export function updateStatusFor(socket: HubSocket, gameId?: string): void {
   updateUserStatus(socket.username, seated ? game : null);
 }
 
-export { findUnacknowledgedWarningForRealtime, sendGameList, sendUserList };
+/**
+ * The notes a player wrote about the players at the table they are in. Whose
+ * notes are read comes from the connection, never from the request.
+ */
+export async function sendPlayerNotes(socket: HubSocket, raw: unknown): Promise<void> {
+  if (!socket.username) return;
+  const seated = raw && typeof raw === 'object' ? (raw as { seatedPlayers?: unknown }).seatedPlayers : undefined;
+  if (!Array.isArray(seated)) return;
+  const names = seated.filter((name): name is string => typeof name === 'string').slice(0, 20);
+
+  try {
+    socket.emit('notesUpdate', await listPlayerNotesForRealtime(socket.username, names));
+  } catch (error) {
+    rootLogger.error({ err: error, user: socket.username }, 'loading player notes failed');
+  }
+}
+
+export { sendGameList, sendUserList };

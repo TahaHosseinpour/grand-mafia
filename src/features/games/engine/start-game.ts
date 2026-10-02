@@ -60,32 +60,38 @@ function buildRoles(game: Game): Role[] {
   const seats = game.publicPlayersState.length;
   const { avalonSH, monarchistSH } = game.general;
 
+  // The special roles (Merlin, Percival, Morgana…) come first in these lists: take the
+  // seats' worth first and shuffle after, or a small table could lose them.
   const liberals = shuffle(
     // Custom games can have up to 8 liberals but there are only 6 pictures; two repeat.
-    range(0, 8).map((el): Role => {
-      if (avalonSH?.withPercival) {
-        return { cardName: el === 1 ? 'percival' : el === 0 ? 'merlin' : 'liberal', icon: el <= 1 ? undefined : (el - 2) % 6, team: 'liberal' };
-      }
-      if (avalonSH) return { cardName: el === 0 ? 'merlin' : 'liberal', icon: el === 0 ? undefined : (el - 1) % 6, team: 'liberal' };
-      return { cardName: 'liberal', icon: el % 6, team: 'liberal' };
-    })
-  ).slice(0, seats - settings.fascistCount - 1);
+    range(0, 8)
+      .map((el): Role => {
+        if (avalonSH?.withPercival) {
+          return { cardName: el === 1 ? 'percival' : el === 0 ? 'merlin' : 'liberal', icon: el <= 1 ? undefined : (el - 2) % 6, team: 'liberal' };
+        }
+        if (avalonSH) return { cardName: el === 0 ? 'merlin' : 'liberal', icon: el === 0 ? undefined : (el - 1) % 6, team: 'liberal' };
+        return { cardName: 'liberal', icon: el % 6, team: 'liberal' };
+      })
+      .slice(0, seats - settings.fascistCount - 1)
+  );
 
   const fascists = shuffle(
-    range(18, 21).map((el): Role => {
-      if (avalonSH?.withPercival && monarchistSH) {
-        if (el % 3 === 0) return { cardName: 'morgana', icon: el, team: 'fascist' };
-        if (el % 3 === 1) return { cardName: 'monarchist', icon: undefined, team: 'fascist' };
+    range(18, 21)
+      .map((el): Role => {
+        if (avalonSH?.withPercival && monarchistSH) {
+          if (el % 3 === 0) return { cardName: 'morgana', icon: el, team: 'fascist' };
+          if (el % 3 === 1) return { cardName: 'monarchist', icon: undefined, team: 'fascist' };
+          return { cardName: 'fascist', icon: el, team: 'fascist' };
+        }
+        if (avalonSH?.withPercival) return { cardName: el % 3 === 0 ? 'morgana' : 'fascist', icon: el, team: 'fascist' };
+        if (monarchistSH) {
+          if (el % 3 === 0) return { cardName: 'monarchist', icon: undefined, team: 'fascist' };
+          return { cardName: 'fascist', icon: el, team: 'fascist' };
+        }
         return { cardName: 'fascist', icon: el, team: 'fascist' };
-      }
-      if (avalonSH?.withPercival) return { cardName: el % 3 === 0 ? 'morgana' : 'fascist', icon: el, team: 'fascist' };
-      if (monarchistSH) {
-        if (el % 3 === 0) return { cardName: 'monarchist', icon: undefined, team: 'fascist' };
-        return { cardName: 'fascist', icon: el, team: 'fascist' };
-      }
-      return { cardName: 'fascist', icon: el, team: 'fascist' };
-    })
-  ).slice(0, settings.fascistCount);
+      })
+      .slice(0, settings.fascistCount)
+  );
 
   return [{ cardName: 'hitler', icon: 6, team: 'fascist' }, ...liberals, ...fascists];
 }

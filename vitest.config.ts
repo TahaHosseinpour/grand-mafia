@@ -13,5 +13,7 @@ export default defineConfig({
     include: ['src/**/*.test.ts'],
     environment: 'node',
     passWithNoTests: true,
+    setupFiles: ['src/test/setup.ts'],
+    env: { LOG_LEVEL: 'silent' },
   },
 });

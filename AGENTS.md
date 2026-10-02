@@ -101,7 +101,7 @@ The feature list is frozen in `src/server/features.ts`; a new domain is agreed f
 |---|---|
 | `@/server/db` only in `src/server/**` and `features/*/dal.ts` | queries outside the data layer (realtime included) |
 | `zod` only in `src/lib/validation.ts` | validation messages silently changing language |
-| deep `@/features/*/*` imports banned (except `/client`; `/system` from cron only) | reaching past a feature's barrel |
+| deep `@/features/*/*` imports banned (except `/client`; `/system` from cron only; `/realtime` from `src/realtime` and `server.ts` only) | reaching past a feature's barrel |
 | `@/server/auth` banned under `src/app/api/**` | routes hand-rolling the try/catch `defineRoute` removes |
 | value imports from `@/generated/prisma/*` outside the data layer | the schema map shipping to the browser |
 | inline `cacheLife({...})`, string tags in `cacheTag`/`revalidateTag`/`updateTag` | durations and tags outside their one file |
