@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { User } from 'lucide-react';
 import { formatNumber } from '@/lib/datetime';
 
-/** "N players online now" badge on the home banner. */
+/** «N بازیکن آنلاین» on the home page. */
 export default function OnlineCount() {
   const [count, setCount] = useState<number | null>(null);
 
@@ -24,10 +23,9 @@ export default function OnlineCount() {
   }, []);
 
   return (
-    <div className="absolute end-[20px] top-[10px] flex items-center gap-1 bg-[#ad76cc] p-[5px] text-[18px] text-[#ddd]">
-      <User aria-hidden className="size-[18px] fill-[lightblue] text-[lightblue]" />
-      {count !== null ? <span className="text-online">{formatNumber(count)}</span> : null}
-      <span>بازیکن آنلاین</span>
-    </div>
+    <span className="inline-flex items-center gap-2 rounded-full bg-black/30 px-3 py-1 text-[0.9rem] text-fg-muted ring-1 ring-white/10">
+      <span className="size-2 rounded-full bg-ok shadow-[0_0_8px_var(--color-ok)]" />
+      {count !== null ? `${formatNumber(count)} بازیکن آنلاین` : 'بازیکنان آنلاین'}
+    </span>
   );
 }

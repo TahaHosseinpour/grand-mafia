@@ -5,19 +5,19 @@ export const metadata: Metadata = { title: 'قوانین بازی — هیتلر
 
 /** Bold white emphasis inside the rules text (legacy `.emphasis`). */
 function E({ children }: { children: React.ReactNode }) {
-  return <span className="font-bold text-white">{children}</span>;
+  return <span className="font-bold text-fg">{children}</span>;
 }
 
 function P({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <p className={`mb-[1em] text-[18px] leading-[1.6] ${className ?? ''}`}>{children}</p>;
+  return <p className={`mb-[1em] text-[1.05rem] leading-[1.9] ${className ?? ''}`}>{children}</p>;
 }
 
 function Aside({ children }: { children: React.ReactNode }) {
-  return <p className="mb-[1em] text-[18px] leading-[1.6] text-site-aside">{children}</p>;
+  return <p className="mb-[1em] text-[1.05rem] leading-[1.9] text-accent-strong">{children}</p>;
 }
 
 function List({ children, aside }: { children: React.ReactNode; aside?: boolean }) {
-  return <ul className={`mb-[1em] list-disc space-y-1 ps-[1.5em] text-[18px] leading-[1.6] ${aside ? 'text-site-aside' : ''}`}>{children}</ul>;
+  return <ul className={`mb-[1em] list-disc space-y-1 ps-[1.5em] text-[1.05rem] leading-[1.9] ${aside ? 'text-accent-strong' : ''}`}>{children}</ul>;
 }
 
 const ROLE_TABLE: { label: string; values: string[] }[] = [
@@ -75,10 +75,10 @@ export default function RulesPage() {
       <div className="mb-[1em] overflow-x-auto">
         <table className="mx-auto border-collapse text-center">
           <thead>
-            <tr className="font-bold text-white">
-              <td className="border border-[#555] p-[5px]">تعداد بازیکنان</td>
+            <tr className="font-bold text-fg">
+              <td className="border border-line px-2 py-1.5">تعداد بازیکنان</td>
               {['۵', '۶', '۷', '۸', '۹', '۱۰'].map((n) => (
-                <td key={n} className="border border-[#555] p-[5px]">
+                <td key={n} className="border border-line px-2 py-1.5">
                   {n}
                 </td>
               ))}
@@ -87,9 +87,9 @@ export default function RulesPage() {
           <tbody>
             {ROLE_TABLE.map((row) => (
               <tr key={row.label}>
-                <td className="border border-[#555] p-[5px]">{row.label}</td>
+                <td className="border border-line px-2 py-1.5">{row.label}</td>
                 {row.values.map((value, index) => (
-                  <td key={index} className="border border-[#555] p-[5px]">
+                  <td key={index} className="border border-line px-2 py-1.5">
                     {value}
                   </td>
                 ))}

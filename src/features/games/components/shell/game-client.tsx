@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import LobbyScreen from '../lobby/lobby-screen';
 import CreateGameScreen from '../create/create-game-screen';
@@ -67,6 +67,10 @@ export default function GameClient({ user }: { user: UserInfo | null }) {
   });
   useSocketEvents();
   useHashRouter();
+  const safeForWork = useClientState((state) => Boolean(state.userInfo.gameSettings?.safeForWork));
+  useEffect(() => {
+    document.title = safeForWork ? 'بازی' : 'هیتلر مخفی';
+  }, [safeForWork]);
 
   return (
     <div className="min-h-dvh bg-ink text-fg">

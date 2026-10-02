@@ -55,7 +55,7 @@ export default function GameChat({ game, className }: { game: GameInfo; classNam
             }
             const message = entry as { chat: string; userName: string; staffRole?: string };
             const user = blind ? undefined : userList.find((u) => u.userName === message.userName);
-            const color = playerColor(user, !settings?.disableSeasonal, settings?.disableElo);
+            const color = settings?.disablePlayerColorsInChat ? undefined : playerColor(user, !settings?.disableSeasonal, settings?.disableElo);
             const seatIndex = game.publicPlayersState.findIndex((p) => p.userName === message.userName);
             const shownName = blind && seatIndex >= 0 && game.general.replacementNames ? game.general.replacementNames[seatIndex] : message.userName;
             return (

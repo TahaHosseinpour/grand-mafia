@@ -11,10 +11,10 @@ export const metadata: Metadata = { title: 'قوانین استفاده — هی
  */
 
 function H2({ children }: { children: React.ReactNode }) {
-  return <h2 className="mb-[0.5em] mt-[1.5em] text-[1.71428571rem] font-bold text-site-heading">{children}</h2>;
+  return <h2 className="mb-[0.5em] mt-[1.5em] text-[1.71428571rem] font-bold text-fg">{children}</h2>;
 }
 function H4({ children }: { children: React.ReactNode }) {
-  return <h4 className="mb-[0.5em] mt-[1em] text-base font-bold text-site-heading">{children}</h4>;
+  return <h4 className="mb-[0.5em] mt-[1em] text-base font-bold text-fg">{children}</h4>;
 }
 function UL({ children }: { children: React.ReactNode }) {
   return <ul className="mb-[1em] list-disc space-y-1 ps-[1.5em]">{children}</ul>;
@@ -23,14 +23,14 @@ function Sub({ children }: { children: React.ReactNode }) {
   return <ul className="list-[circle] space-y-1 ps-[1.5em]">{children}</ul>;
 }
 function E({ children }: { children: React.ReactNode }) {
-  return <span className="font-bold text-white">{children}</span>;
+  return <span className="font-bold text-fg">{children}</span>;
 }
 
 /** Click-to-reveal for the censored words (legacy `toggle()`). */
 function Reveal({ word }: { word: string }) {
   return (
     <details className="inline">
-      <summary className="inline cursor-pointer text-ui-link">برای دیدن بزنید ←</summary>
+      <summary className="inline cursor-pointer text-accent-strong">برای دیدن بزنید ←</summary>
       <span dir="ltr" className="ms-1">
         {word}
       </span>
@@ -61,7 +61,7 @@ const PENALTIES: string[][] = [
 
 export default function TermsPage() {
   return (
-    <PagePanel className="text-site-heading [&_li]:leading-[1.7] [&_p]:mb-[1em] [&_p]:leading-[1.7]">
+    <PagePanel className="text-fg [&_li]:leading-[1.7] [&_p]:mb-[1em] [&_p]:leading-[1.7]">
       <PageTitle underline={false}>قوانین استفاده</PageTitle>
 
       <H2>کلیات</H2>
@@ -276,11 +276,11 @@ export default function TermsPage() {
       </p>
       <p>با تکرار تخلف، جریمه‌ها به‌تدریج سنگین‌تر می‌شوند و در نهایت به مسدودی می‌رسند.</p>
       <div className="mb-[1em] overflow-x-auto">
-        <table className="mx-auto w-full min-w-[560px] border-collapse border border-[#555] text-center text-[0.92857143rem]">
+        <table className="mx-auto w-full min-w-[560px] border-collapse border border-line text-center text-[0.92857143rem]">
           <thead>
             <tr>
               {PENALTY_HEAD.map((head) => (
-                <th key={head} className="border border-[#555] p-[5px] font-bold">
+                <th key={head} className="border border-line px-2 py-1.5 font-bold">
                   {head}
                 </th>
               ))}
@@ -290,7 +290,7 @@ export default function TermsPage() {
             {PENALTIES.map((row) => (
               <tr key={row[0]} className="h-[50px]">
                 {row.map((cell, index) => (
-                  <td key={index} className={`border border-[#555] p-[5px] ${index === 0 ? 'font-bold' : ''}`}>
+                  <td key={index} className={`border border-line px-2 py-1.5 ${index === 0 ? 'font-bold' : ''}`}>
                     {cell}
                   </td>
                 ))}

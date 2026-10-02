@@ -17,6 +17,27 @@ library: one local component layer, a preview of it, tokens instead of
 values, and one way to do each recurring thing. Ask the user which stack a
 new project uses; never install one by default.
 
+## This project
+
+The 2026 redesign: dark, warm and mobile-first, in the spirit of
+secret-hitler.online, the same across the site pages and the game client.
+
+- **Tokens** (`src/app/globals.css`): `ink` (page), `surface`/`surface-2`/`surface-3`
+  (raised levels), `line`, `fg`/`fg-muted`/`fg-faint` (text), `paper`/`paper-ink`
+  (cards), `header`, one `accent` (orange call to action, `accent-deep` is its
+  pressed base), `lib*` and `fas*` for the teams, `hit`, `gold`, `ok`, `danger`.
+- **Type**: `font-display` (Lalezar) for headings, big buttons and card titles;
+  Vazirmatn for everything else. Root size 16px.
+- **Primitives** (`src/components/ui`): `Button` (chunky, pressing into its
+  base), `Modal` (bottom sheet on phones, card from `sm`), `IconInput` /
+  `fieldClasses`, `Message`, `Badge`, `Switch`, `Segmented`, `Stepper`,
+  `Spinner`, `DimmerLoader`.
+- **Game art** (`src/features/games/components/table/cards.tsx`): policy,
+  ballot, role and membership cards drawn in CSS — no third-party artwork.
+- **Phone first**: tab bars at the bottom, actions in sheets, `env(safe-area-inset-*)`
+  respected; from `lg` the lobby and the table become multi-column.
+- Persian text never uses `·` as a separator: it reads as the Persian zero.
+
 ## The short version
 
 1. **Reach for `src/components/ui` first.** Whatever the library, the

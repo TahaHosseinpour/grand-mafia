@@ -43,7 +43,7 @@ export default function GeneralChat({ className }: { className?: string }) {
         <ul className="flex flex-col gap-1.5">
           {chats.list.map((chat, i) => {
             const user = userList.find((entry) => entry.userName === chat.userName);
-            const color = playerColor(user, seasonal, settings?.disableElo);
+            const color = settings?.disablePlayerColorsInChat ? undefined : playerColor(user, seasonal, settings?.disableElo);
             return (
               <li key={`${chat.time}-${i}`} className="leading-relaxed break-words">
                 {settings?.enableTimestamps ? <span className="me-1.5 text-[0.75rem] text-fg-faint">{formatTime(chat.time)}</span> : null}

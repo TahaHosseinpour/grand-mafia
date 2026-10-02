@@ -135,7 +135,8 @@ The feature list is frozen in `src/server/features.ts`; a new domain is agreed f
    and the information a socket receives respects hidden roles: a player's
    role, party or the deck order never reaches a client that may not see it.
 9. **A ported behaviour matches legacy** — same rules, same timings, same
-   flow. A deliberate change is written in the commit message.
+   flow. A deliberate change is written in the commit message. (The *look* is
+   not ported: the UI follows the redesign in `docs/design.md`.)
 
 ## Definition of done
 

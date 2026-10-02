@@ -1,19 +1,16 @@
 @import 'tailwindcss';
 
 /*
- * Design tokens. Values come from the legacy SCSS (legacy/src/scss), so the
- * game looks the way it did; only the font (Vazirmatn) and direction (RTL)
- * change. Components use these tokens, never raw hex.
+ * Design tokens: one dark, warm, mobile-first look for the whole site (the
+ * 2026 redesign). Components use these tokens, never raw hex. Lalezar for
+ * headings and big buttons, Vazirmatn for everything else.
  */
 @theme {
   --font-sans: var(--font-vazirmatn), Tahoma, sans-serif;
   /* Headings, big buttons, card titles. */
   --font-display: var(--font-lalezar), var(--font-vazirmatn), Tahoma, sans-serif;
 
-  /*
-   * Game UI (the 2026 redesign: dark, warm, mobile-first). Paper cards on a
-   * charcoal table, one orange accent, blue for liberals, red for fascists.
-   */
+  /* Paper cards on a charcoal table, one orange accent, blue for liberals, red for fascists. */
   --color-ink: #131211;
   --color-surface: #1c1a18;
   --color-surface-2: #252220;
@@ -39,59 +36,6 @@
   --color-gold: #e8b34b;
   --color-ok: #4dae6d;
   --color-danger: #d93f3f;
-
-  /* Teams and roles (legacy variables.scss) */
-  --color-liberal: #608cb3;
-  --color-liberal-light: #bfd8ee;
-  --color-fascist: #e36248;
-  --color-fascist-dark: #f2654c;
-  --color-fascist-light: #e4bcba;
-  --color-hitler: #be0804;
-  --color-merlin: #355fc4;
-  --color-percival: #67caff;
-  --color-morgana: #f69218;
-  --color-monarchist: #f29d78;
-
-  /* UI accents */
-  --color-tourny: #1cb98e;
-  --color-notification: #fbbd08;
-  --color-selection: #db2828;
-  --color-proceed: #2185d0;
-  --color-teal: #097892;
-  --color-teal-dark: #034f61;
-  --color-blacklist: #462c35;
-  --color-thirteen: #1c9cb9;
-  --color-brand: #c36563;
-
-  /* Semantic UI surface tokens the legacy app was built on */
-  --color-ui-grey: #e0e1e2;
-  --color-ui-grey-hover: #cacbcd;
-  --color-ui-primary: #2185d0;
-  --color-ui-primary-hover: #1678c2;
-  --color-ui-border: rgb(34 36 38 / 0.15);
-  --color-ui-text: rgb(0 0 0 / 0.87);
-  --color-ui-text-muted: rgb(0 0 0 / 0.6);
-  --color-ui-placeholder: rgb(191 191 191 / 0.87);
-  --color-ui-info-bg: #f8ffff;
-  --color-ui-info-text: #276f86;
-  --color-ui-info-border: #a9d5de;
-  --color-ui-negative-bg: #fff6f6;
-  --color-ui-negative-text: #9f3a38;
-  --color-ui-negative-border: #e0b4b4;
-  --color-ui-positive-bg: #fcfff5;
-  --color-ui-positive-text: #2c662d;
-  --color-ui-positive-border: #a3c293;
-  --color-ui-link: #4183c4;
-
-  /* Site chrome (legacy style-web.scss) */
-  --color-site-bg: #201212;
-  --color-site-panel: #030000;
-  --color-site-text: #cccccc;
-  --color-site-heading: #eeeeee;
-  --color-site-aside: #e85019;
-  --color-online: #85d42a;
-
-  --radius-ui: 0.28571429rem;
 }
 
 @layer base {
@@ -107,27 +51,20 @@
 
   body {
     font-family: var(--font-sans);
-    line-height: 1.4285em;
+    line-height: 1.6;
+    background: var(--color-ink);
+    color: var(--color-fg);
   }
 
   a {
-    color: var(--color-ui-link);
-  }
-  a:hover {
-    color: #1e70bf;
+    color: var(--color-accent-strong);
   }
 }
 
-/* Thin scrollbars, as in the legacy site */
-::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
-}
-::-webkit-scrollbar-thumb {
-  background: #717171;
-}
-::-webkit-scrollbar-track {
-  background: #bfbfbf;
+/* Thin, quiet scrollbars. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
 }
 
 /* Dialogs: a sheet slides up on phones, a card pops in on larger screens. */

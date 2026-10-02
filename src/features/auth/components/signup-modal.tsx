@@ -74,7 +74,7 @@ export default function SignupModal({ open, onClose }: { open: boolean; onClose:
       <p className="mt-[10px] text-center text-base font-bold">
         با بازی در این سایت، <a href="/tou" target="_blank">قوانین استفاده</a> را می‌پذیرید.
       </p>
-      <p className="mt-[10px] text-center text-[11px] font-bold text-[#888]">
+      <p className="mt-[10px] text-center text-[11px] font-bold text-fg-faint">
         بازیکنانی که کمتر از ۱۰ امتیاز تجربه (XP) دارند نمی‌توانند در چت عمومی یا به‌عنوان تماشاگر پیام بفرستند یا
         بازیکنی را گزارش کنند.
       </p>
@@ -116,7 +116,7 @@ export default function SignupModal({ open, onClose }: { open: boolean; onClose:
           onChange={(event) => setPassword2(event.target.value)}
         />
         <div>
-          <h4 className="mb-[0.5em] font-bold text-[darkred]">ایمیل اختیاری است</h4>
+          <h4 className="mb-[0.5em] font-bold text-fas-soft">ایمیل اختیاری است</h4>
           <IconInput
             icon={Mail}
             type="email"
@@ -129,18 +129,18 @@ export default function SignupModal({ open, onClose }: { open: boolean; onClose:
           />
         </div>
         <label className="flex items-start gap-[5px] text-[0.92857143rem] font-bold">
-          <input type="checkbox" className="mt-[3px]" checked={isPrivate} onChange={(event) => togglePrivate(event.target.checked)} />
+          <input type="checkbox" className="mt-[3px] size-4 accent-[var(--color-accent)]" checked={isPrivate} onChange={(event) => togglePrivate(event.target.checked)} />
           <span>
-            <span className="text-[#aaa]">
+            <span className="text-fg-muted">
               پیش از انتخاب با دقت بخوانید: گزینه‌ی «فقط بازی‌های خصوصی» — نام شما در فهرست بازیکنان دیده نمی‌شود، نمی‌توانید در
               چت عمومی پیام بفرستید،{' '}
             </span>
-            <b className="text-[#555]">و نمی‌توانید در بازی‌های عمومی شرکت کنید.</b>
+            <b className="text-fg">و نمی‌توانید در بازی‌های عمومی شرکت کنید.</b>
           </span>
         </label>
         <label className="flex items-start gap-[5px] text-[0.92857143rem] font-bold">
-          <input type="checkbox" className="mt-[3px]" checked={touAgree} onChange={(event) => setTouAgree(event.target.checked)} />
-          <span className="text-[#a77]">
+          <input type="checkbox" className="mt-[3px] size-4 accent-[var(--color-accent)]" checked={touAgree} onChange={(event) => setTouAgree(event.target.checked)} />
+          <span className="text-fg-muted">
             <a href="/tou" target="_blank">
               قوانین استفاده
             </a>{' '}

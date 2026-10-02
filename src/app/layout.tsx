@@ -18,13 +18,13 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#c36563',
+  themeColor: '#3a1c12',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fa" dir="rtl" className={`${vazirmatn.variable} ${lalezar.variable}`}>
-      <body className="bg-site-bg">{children}</body>
+      <body className="bg-ink">{children}</body>
     </html>
   );
 }

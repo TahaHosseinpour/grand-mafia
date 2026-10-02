@@ -71,7 +71,7 @@ export default function SigninModal({
             {error}
           </Message>
         ) : null}
-        <button type="button" onClick={onForgotPassword} className="mx-auto block cursor-pointer text-ui-link hover:underline">
+        <button type="button" onClick={onForgotPassword} className="mx-auto block cursor-pointer text-accent-strong hover:underline">
           رمز عبور خود را فراموش کرده‌اید؟
         </button>
       </form>

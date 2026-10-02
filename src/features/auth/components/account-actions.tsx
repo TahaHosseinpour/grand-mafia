@@ -87,7 +87,7 @@ export default function AccountActions({ account }: { account: AccountDTO }) {
   };
   const close = () => setOpen(null);
 
-  const buttonClass = 'mx-auto mt-[5px] block';
+  const buttonClass = 'mx-auto mt-3 flex w-full max-w-sm';
 
   return (
     <>
@@ -109,7 +109,7 @@ export default function AccountActions({ account }: { account: AccountDTO }) {
               درخواست ایمیل تأیید جدید
             </Button>
           ) : null}
-          <Button variant="primary" className={buttonClass} onClick={() => show('email')}>
+          <Button variant="secondary" className={buttonClass} onClick={() => show('email')}>
             تغییر آدرس ایمیل
           </Button>
         </>
@@ -118,7 +118,7 @@ export default function AccountActions({ account }: { account: AccountDTO }) {
           افزودن ایمیل و ارسال ایمیل تأیید
         </Button>
       )}
-      <Button variant="primary" className={buttonClass} onClick={() => show('password')}>
+      <Button variant="secondary" className={buttonClass} onClick={() => show('password')}>
         تغییر رمز عبور
       </Button>
       <Button variant="negative" className={buttonClass} onClick={() => show('delete')}>
@@ -151,7 +151,7 @@ export default function AccountActions({ account }: { account: AccountDTO }) {
         title={account.email ? 'تغییر ایمیل (و ارسال ایمیل تأیید جدید)' : `افزودن ایمیل برای حساب ${account.username}`}
       >
         {account.email ? null : (
-          <ul className="list-disc space-y-1 ps-[1.5em] pt-[0.5em] text-[0.92857143rem] text-ui-text-muted">
+          <ul className="list-disc space-y-1 ps-[1.5em] pt-[0.5em] text-[0.92857143rem] text-fg-muted">
             <li>ایمیل فقط برای تأیید حساب و بازیابی رمز عبور استفاده می‌شود.</li>
             <li>ایمیل شما هرگز برای هیچ کار دیگری، از جمله ارسال انبوه، استفاده نمی‌شود.</li>
             <li>فقط مدیران کل می‌توانند ایمیل شما را ببینند.</li>

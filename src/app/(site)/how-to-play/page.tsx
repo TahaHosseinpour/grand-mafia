@@ -1,69 +1,71 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
-import { PagePanel, PageTitle, SectionTitle } from '@/components/layout/page-panel';
+import { Bell, Gamepad2, Megaphone, MessagesSquare, Plus, Settings, Vote } from 'lucide-react';
+import { PagePanel, PageTitle } from '@/components/layout/page-panel';
 
 export const metadata: Metadata = { title: 'آموزش بازی — هیتلر مخفی' };
 
-const SECTIONS = [
+const STEPS = [
   {
-    title: 'نمای پیش‌فرض',
-    text: 'روی بازی‌های وسط صفحه بزنید تا واردشان شوید. می‌توانید بازی‌های در جریان را تماشا کنید، وارد بازی‌هایی شوید که به بازیکن نیاز دارند (بالای فهرست) و روی صندلی بنشینید، بازی خودتان را بسازید، یا به صفحه‌ی تنظیمات بروید و پروفایل بازیکنان دیگر را ببینید.',
-    image: '/images/DefaultView.png',
-    width: 1920,
-    height: 1080,
+    icon: Gamepad2,
+    title: 'لابی',
+    text: 'در لابی همه‌ی میزها را می‌بینید: میزهایی که منتظر بازیکن‌اند بالاتر می‌آیند. روی هر میز بزنید تا واردش شوید؛ بازی‌های در جریان را هم می‌توانید تماشا کنید. با دکمه‌ی فیلتر، نوع بازی‌هایی را که می‌خواهید ببینید انتخاب کنید.',
   },
   {
-    title: 'تنظیمات بازیکن',
-    text: 'وقتی به وضعیت «رنگین‌کمانی» برسید، یعنی ۱۰ امتیاز تجربه (XP) کسب کنید، می‌توانید پشت کارت دلخواه بارگذاری کنید.',
-    image: '/images/PlayerSettings.png',
-    width: 1920,
-    height: 1080,
+    icon: Plus,
+    title: 'ساختن میز',
+    text: 'دکمه‌ی «بازی جدید» را بزنید، نام میز، نوع بازی (رتبه‌ای، غیررسمی، تمرینی یا سفارشی) و تعداد بازیکنان را انتخاب کنید. بازی خصوصی رمز می‌خواهد. گزینه‌های بیشتر مثل زمان هر تصمیم، نام‌های ناشناس و آوالون هم هست.',
   },
   {
-    title: 'پروفایل بازیکن',
-    text: 'آمار و بازی‌های اخیر هر بازیکن در پروفایل او دیده می‌شود.',
-    image: '/images/PlayerProfile.png',
-    width: 1920,
-    height: 1080,
+    icon: Vote,
+    title: 'نوبت شما',
+    text: 'هر وقت بازی منتظر شما باشد — نامزد کردن صدراعظم، رأی دادن، دورریختن یا تصویب قانون، یا استفاده از قدرت ریاست‌جمهوری — پنجره‌ای باز می‌شود. انتخاب کنید و تأیید بزنید. اگر خواستید اول میز را ببینید، «بعداً» را بزنید و از دکمه‌ی «نوبت شماست» برگردید.',
   },
   {
-    title: 'ساخت بازی',
-    text: 'با کشیدن نوار لغزنده، حداقل و حداکثر تعداد بازیکنان بازی را تعیین کنید؛ تنظیمات بسیار دیگری هم در دسترس است.',
-    image: '/images/CreateGamesView.png',
-    width: 1920,
-    height: 1080,
+    icon: Megaphone,
+    title: 'ادعا',
+    text: 'بعد از هر دولت، رئیس‌جمهور و صدراعظم می‌توانند با دکمه‌ی «ادعا» بگویند چه قوانینی دیدند — راست یا دروغ. ادعا در چت اعلام و در تاریخچه‌ی بازی ثبت می‌شود.',
   },
   {
-    title: 'بازیِ شروع‌نشده',
-    text: 'یک بازی تازه که فقط سازنده‌اش روی صندلی نشسته است. از گوشه‌ی بالا می‌توانید پیام‌های چت را فیلتر کنید.',
-    image: '/images/UnstartedGameView.png',
-    width: 1920,
-    height: 1080,
+    icon: MessagesSquare,
+    title: 'چت',
+    text: 'روی گوشی، میز و چت دو زبانه‌ی پایین صفحه‌اند. چت عمومی لابی برای همه است و هر میز چت خودش را دارد. با دکمه‌ی ایموجی، ایموجی‌های بازی را بفرستید.',
   },
-] as const;
+  {
+    icon: Settings,
+    title: 'تنظیمات و پروفایل',
+    text: 'از دکمه‌ی حساب در بالای صفحه به پروفایل و تنظیمات بروید: پروفایل خصوصی، فهرست سیاه، نمایش ELO، ساعت پیام‌ها و چیزهای دیگر.',
+  },
+  {
+    icon: Bell,
+    title: 'رتبه و تجربه',
+    text: 'بازی‌های رتبه‌ای ELO و امتیاز تجربه می‌دهند و بازی‌های تمرینی فقط امتیاز تجربه. با ۱۰ امتیاز تجربه «باتجربه» می‌شوید و نامتان بر اساس ELO رنگ می‌گیرد.',
+  },
+];
 
-/** How to play (legacy views/page-howtoplay.pug), translated. */
 export default function HowToPlayPage() {
   return (
-    <PagePanel className="text-site-heading">
-      <PageTitle underline={false}>آموزش بازی هیتلر مخفی</PageTitle>
-      <SectionTitle underline={false}>منابع</SectionTitle>
-      <p className="text-center">
-        <a href="/rules">قوانین کامل بازی</a>
+    <PagePanel>
+      <PageTitle>آموزش بازی</PageTitle>
+      <p className="mb-6 text-center">
+        اگر قوانین را نمی‌دانید، اول{' '}
+        <a href="/rules" className="text-accent-strong underline">
+          قوانین بازی
+        </a>{' '}
+        را بخوانید. این صفحه می‌گوید سایت چطور کار می‌کند.
       </p>
-      {SECTIONS.map((section) => (
-        <section key={section.title}>
-          <SectionTitle underline={false}>{section.title}</SectionTitle>
-          <p className="mb-[1em] text-center text-[14px]">{section.text}</p>
-          <Image
-            src={section.image}
-            alt={section.title}
-            width={section.width}
-            height={section.height}
-            className="mx-auto mb-[10px] block h-auto max-w-[90%] shadow-[0_3px_4px_1px_#333]"
-          />
-        </section>
-      ))}
+      <ol className="flex flex-col gap-3">
+        {STEPS.map(({ icon: Icon, title, text }) => (
+          <li key={title} className="flex gap-4 rounded-2xl bg-surface-2 p-4">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-strong">
+              <Icon className="size-6" aria-hidden />
+            </span>
+            <div>
+              <h2 className="font-display text-[1.35rem] leading-tight text-fg">{title}</h2>
+              <p className="mt-1 leading-relaxed">{text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
     </PagePanel>
   );
 }

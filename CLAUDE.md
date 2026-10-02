@@ -3,9 +3,11 @@
 ## Overview
 A Persian (RTL) online version of the social-deduction board game Secret
 Hitler ("هیتلر مخفی"), forked from Secret Hitler.io and being rewritten from
-Express + MongoDB + React 16 onto Next.js 16. The look and the flow of the
-game must stay exactly as they were; only the language (Persian, Vazirmatn
-font) and responsiveness change.
+Express + MongoDB + React 16 onto Next.js 16. The game's rules and flow stay
+as they were (the engine is a faithful port). The look does not: the product
+owner asked for a new, modern, mobile-first design in the spirit of
+secret-hitler.online (Lalezar for headings, Vazirmatn for text; see
+docs/design.md).
 
 ## Documentation
 Standing rules live in `AGENTS.md` and `docs/` (English). Before working on an
@@ -30,7 +32,7 @@ architecture and templates; this project's docs win where they differ.
 - Custom server (`server.ts`): Next + Socket.IO 4 in one Node process
 - PostgreSQL + Prisma 7 (`pg` adapter); Zod 4 via `@/lib/validation`
 - pino logging, in-process rate limiting, vitest for the game engine
-- UI: hand-built components in `src/components/ui` + Tailwind CSS 4; font Vazirmatn (self-hosted)
+- UI: hand-built components in `src/components/ui` + Tailwind CSS 4; fonts Lalezar (display) and Vazirmatn (text), self-hosted
 
 ## Checks
 `pnpm typecheck`, `pnpm lint`, `pnpm test`; `pnpm build` for boundary/caching/config changes.

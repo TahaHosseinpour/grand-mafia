@@ -4,13 +4,13 @@ import { PagePanel } from '@/components/layout/page-panel';
 export const metadata: Metadata = { title: 'درباره — هیتلر مخفی' };
 
 function H3({ children }: { children: React.ReactNode }) {
-  return <h3 className="mb-[0.5em] mt-[1.5em] text-[1.28571429rem] font-bold text-site-heading">{children}</h3>;
+  return <h3 className="mb-[0.5em] mt-[1.5em] text-[1.28571429rem] font-bold text-fg">{children}</h3>;
 }
 
 /** About and privacy (legacy views/page-about.pug), translated. */
 export default function AboutPage() {
   return (
-    <PagePanel className="text-site-heading [&_p]:mb-[1em] [&_p]:text-base [&_p]:leading-[1.7]">
+    <PagePanel className="text-fg [&_p]:mb-[1em] [&_p]:text-base [&_p]:leading-[1.7]">
       <p>
         این برنامه بر پایه‌ی بازی رومیزی و از روی پروژه‌ی متن‌باز{' '}
         <a href="https://github.com/cozuya/secret-hitler" target="_blank" rel="noreferrer">

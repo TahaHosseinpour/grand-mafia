@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: 'تغییر رمز عبور — هی�
 /** The page a password-reset email links to (legacy page-resetpassword.pug). */
 export default function ResetPasswordPage({ params }: PageProps<'/reset-password/[username]/[token]'>) {
   return (
-    <PagePanel className="text-site-heading">
+    <PagePanel className="text-fg">
       <SectionTitle underline={false}>تغییر رمز عبور</SectionTitle>
       <Suspense fallback={null}>
         <Form params={params} />

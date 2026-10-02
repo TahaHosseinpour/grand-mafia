@@ -13,7 +13,7 @@ export const metadata: Metadata = { title: 'تأیید حساب — هیتلر �
  */
 export default function VerifyAccountPage({ params }: PageProps<'/verify-account/[username]/[token]'>) {
   return (
-    <PagePanel className="text-site-heading">
+    <PagePanel className="text-fg">
       <Suspense fallback={<p className="text-center">در حال تأیید…</p>}>
         <Verify params={params} />
       </Suspense>

@@ -9,9 +9,8 @@ import SignupModal from './signup-modal';
 type Open = 'signin' | 'signup' | 'reset' | null;
 
 /**
- * The "Log In / or / Sign Up" button pair of the top menu, with the three
- * dialogs it opens (legacy layout.pug `.ui.buttons` + modals). The game
- * client's menu restyles the pair through `className`.
+ * The «ورود | ثبت‌نام» pair of the top bars, with the three dialogs it opens.
+ * Each bar restyles the pair through `className`.
  */
 export default function AuthButtons({ className }: { className?: string } = {}) {
   const [open, setOpen] = useState<Open>(null);
@@ -19,14 +18,12 @@ export default function AuthButtons({ className }: { className?: string } = {}) 
 
   return (
     <>
-      <div className={cn('flex h-[38px] items-stretch overflow-hidden rounded-b-ui bg-liberal text-white', className)}>
-        <button type="button" onClick={() => setOpen('signin')} className="cursor-pointer px-[1.5em] font-bold">
+      <div className={cn('flex h-10 items-stretch overflow-hidden rounded-xl bg-surface-3 text-fg', className)}>
+        <button type="button" onClick={() => setOpen('signin')} className="cursor-pointer px-4 font-bold hover:bg-black/15">
           ورود
         </button>
-        <span className="relative z-[2] my-auto inline-flex size-[1.78571429em] items-center justify-center rounded-full bg-white text-[0.92857143rem] font-bold text-ui-text-muted shadow-[0_0_0_1px_transparent_inset]">
-          یا
-        </span>
-        <button type="button" onClick={() => setOpen('signup')} className="cursor-pointer px-[1.5em] font-bold">
+        <span aria-hidden className="my-2 w-px bg-current opacity-25" />
+        <button type="button" onClick={() => setOpen('signup')} className="cursor-pointer px-4 font-bold hover:bg-black/15">
           ثبت‌نام
         </button>
       </div>

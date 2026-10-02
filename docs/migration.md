@@ -9,8 +9,10 @@ the reference for every port. It is deleted when the last phase lands.
 1. Persian UI, font Vazirmatn, RTL.
 2. Stack: Next.js 16 + TypeScript + Prisma + PostgreSQL + Tailwind.
 3. Reusable component structure.
-4. **The look and the flow of the game do not change** — only Persian and
-   responsive layouts.
+4. ~~The look and the flow of the game do not change~~ — the **flow** (rules,
+   events, options) is unchanged. The **look** was replaced in phase 3 at the
+   product owner's request: a modern, mobile-first design in the spirit of
+   secret-hitler.online, uniform across the site (see `docs/design.md`).
 
 ## Decisions
 
@@ -106,10 +108,17 @@ code.
   Deferred on purpose: staff-only slash commands and the moderation events
   (phase 5), badges and profile statistics (phase 4), cardback upload, Flappy
   Hitler and the changelog (phase 6).
-- [ ] **3 — Game client.** Lobby, create game, the table (tracks, players,
-  cards, votes, powers), game chat, general chat, player list, settings,
-  profile — Persian, responsive, Tailwind components matching the legacy look.
+- [x] **3 — Game client (redesigned).** `/game` and `/observe` are one client
+  (`src/features/games/components`): lobby (tables, filters, online players,
+  general chat — tabs on a phone), create game (every engine option, custom
+  powers and deck), the table (board, seats, action sheets for every decision,
+  role/peek/investigation reveals, claims, remake, leave, game chat), settings
+  (privacy with its 18-hour rule, pronouns, bio, blacklist, staff options) and
+  a profile card. The site pages share the design. Not yet: profile history,
+  badges and charts (phase 4), moderator tools (phase 5), cardback upload,
+  sounds, confetti (phase 6). The legacy theme colours and player-chosen
+  theme are gone.
 - [ ] **4 — Ranking.** ELO/XP updates, seasons, leaderboards, badges, profile stats.
 - [ ] **5 — Moderation.** Moderation panel, reports, signups, mod DMs, bans/timeouts.
 - [ ] **6 — Cosmetics.** Cardback upload, emotes, Flappy Hitler, changelog.
-- [ ] **7 — Cleanup.** Delete `legacy/`; final visual pass against screenshots.
+- [ ] **7 — Cleanup.** Delete `legacy/` and the legacy images in `public/images` nothing uses.

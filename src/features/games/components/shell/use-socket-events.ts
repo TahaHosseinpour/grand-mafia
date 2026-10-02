@@ -93,6 +93,12 @@ export function useSocketEvents(): void {
         setState((state) => ({
           userInfo: { ...state.userInfo, gameSettings: { ...state.userInfo.gameSettings, newReport } },
         })),
+      // A table opened that the player asked to hear about (settings → «خبرم کن»).
+      newGameAdded: (game: { creator?: string }) => {
+        const { userInfo } = getState();
+        if (!userInfo.gameSettings?.notifyForNewLobby || game?.creator === userInfo.userName) return;
+        if ('Notification' in window && Notification.permission === 'granted') new Notification('یک میز تازه در لابی باز شد.');
+      },
       gameJoinStatusUpdate: (update: { status?: string }) => {
         if (update?.status === 'blacklisted') addAlert('سازنده‌ی این بازی شما را در فهرست سیاه خود گذاشته است.');
       },

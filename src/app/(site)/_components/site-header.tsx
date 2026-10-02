@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getSession } from '@/server/auth';
-import { AuthButtons, SignOutLink } from '@/features/auth/client';
+import { AuthButtons } from '@/features/auth/client';
 import SiteMenu from './site-menu';
 
 /** The top menu with the visitor's account area (reads the session cookie). */
@@ -8,14 +8,15 @@ export default async function SiteHeader() {
   const session = await getSession();
 
   const account = session ? (
-    <div className="flex items-center gap-5 pe-2 text-[0.92857143rem]">
-      <SignOutLink className="text-white/80 hover:text-white" />
-      <Link href="/account" className="text-online hover:text-online">
-        حساب کاربری {session.username}
-      </Link>
-    </div>
+    <Link
+      href="/account"
+      aria-label={`حساب کاربری ${session.username}`}
+      className="flex size-10 items-center justify-center rounded-full bg-black/25 font-display text-[1.3rem] text-paper ring-1 ring-white/15 hover:bg-black/40 hover:text-paper"
+    >
+      {session.username.slice(0, 1).toUpperCase()}
+    </Link>
   ) : (
-    <AuthButtons />
+    <AuthButtons className="hidden h-9 rounded-xl bg-black/25 text-[0.9rem] text-paper ring-1 ring-white/15 sm:flex [&_button]:px-3" />
   );
 
   return <SiteMenu signedIn={Boolean(session)} account={account} />;
